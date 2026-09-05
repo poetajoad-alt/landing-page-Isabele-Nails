@@ -1,0 +1,1523 @@
+/* =========================================================
+   ISABELE MARIANA NAILS
+   Landing Page
+   ========================================================= */
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "DM Sans", sans-serif;
+  background: #fffafb;
+  color: #3f3338;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+img {
+  display: block;
+  width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+/* =========================================================
+   VARIÁVEIS
+   ========================================================= */
+
+:root {
+  --pink-light: #ffd9e7;
+  --pink-soft: #f8c6d8;
+  --pink: #d98ba7;
+  --pink-dark: #a8617b;
+
+  --background: #fffafb;
+  --background-soft: #fff3f7;
+  --background-card: #ffffff;
+
+  --text: #3f3338;
+  --text-soft: #78666d;
+  --text-light: #a28f96;
+
+  --white: #ffffff;
+
+  --border: rgba(168, 97, 123, 0.14);
+  --border-strong: rgba(168, 97, 123, 0.24);
+
+  --shadow-sm: 0 10px 30px rgba(102, 50, 69, 0.07);
+  --shadow-md: 0 20px 50px rgba(102, 50, 69, 0.11);
+  --shadow-lg: 0 30px 80px rgba(102, 50, 69, 0.15);
+
+  --radius-sm: 16px;
+  --radius-md: 24px;
+  --radius-lg: 36px;
+  --radius-full: 999px;
+
+  --container: 1180px;
+}
+
+/* =========================================================
+   ESTRUTURA
+   ========================================================= */
+
+.container {
+  width: min(calc(100% - 48px), var(--container));
+  margin: 0 auto;
+}
+
+section {
+  position: relative;
+}
+
+.section-eyebrow,
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+
+  color: var(--pink-dark);
+}
+
+.section-eyebrow::before,
+.hero-eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: var(--pink-dark);
+}
+
+.section-heading {
+  max-width: 680px;
+}
+
+.section-heading h2,
+.booking-content h2,
+.contact-content h2 {
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+
+.section-heading h2 {
+  font-size: clamp(2.4rem, 5vw, 4.6rem);
+}
+
+.section-heading h2 span {
+  color: var(--pink-dark);
+  font-style: italic;
+}
+
+/* =========================================================
+   BOTÕES
+   ========================================================= */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  min-height: 54px;
+  padding: 0 26px;
+
+  border-radius: var(--radius-full);
+  border: 1px solid transparent;
+
+  font-size: 0.94rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+}
+
+.button-primary {
+  background: var(--pink-dark);
+  color: var(--white);
+  box-shadow: 0 14px 30px rgba(168, 97, 123, 0.24);
+}
+
+.button-primary:hover {
+  background: #934f68;
+  box-shadow: 0 18px 36px rgba(168, 97, 123, 0.3);
+}
+
+.button-secondary {
+  background: rgba(255, 255, 255, 0.65);
+  color: var(--pink-dark);
+  border-color: var(--border-strong);
+  backdrop-filter: blur(10px);
+}
+
+.button-secondary:hover {
+  background: var(--white);
+  border-color: rgba(168, 97, 123, 0.4);
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  background: rgba(255, 250, 251, 0.88);
+  border-bottom: 1px solid rgba(168, 97, 123, 0.08);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.header-container {
+  min-height: 82px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.brand {
+  display: inline-flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.brand-name {
+  font-family: "Playfair Display", serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.03em;
+}
+
+.brand-subtitle {
+  margin-top: 5px;
+
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+
+  color: var(--pink-dark);
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.header-nav a {
+  position: relative;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+
+  color: var(--text-soft);
+
+  transition: color 0.2s ease;
+}
+
+.header-nav a::after {
+  content: "";
+
+  position: absolute;
+  left: 0;
+  bottom: -7px;
+
+  width: 0;
+  height: 2px;
+
+  border-radius: 10px;
+
+  background: var(--pink-dark);
+
+  transition: width 0.25s ease;
+}
+
+.header-nav a:hover {
+  color: var(--pink-dark);
+}
+
+.header-nav a:hover::after {
+  width: 100%;
+}
+
+.button-header {
+  min-height: 46px;
+  padding: 0 22px;
+
+  background: var(--pink-dark);
+  color: var(--white);
+
+  font-size: 0.86rem;
+}
+
+.button-header:hover {
+  background: #934f68;
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero {
+  min-height: calc(100vh - 82px);
+
+  display: flex;
+  align-items: center;
+
+  padding: 90px 0 100px;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 83% 25%,
+      rgba(255, 217, 231, 0.75),
+      transparent 30%
+    ),
+    linear-gradient(135deg, #fffafb 0%, #fff5f8 45%, #fffafb 100%);
+}
+
+.hero-container {
+  position: relative;
+  z-index: 2;
+
+  display: grid;
+  grid-template-columns: 1fr 0.92fr;
+  align-items: center;
+  gap: 90px;
+}
+
+.hero-content {
+  max-width: 620px;
+}
+
+.hero h1 {
+  max-width: 650px;
+
+  margin-bottom: 28px;
+
+  font-family: "Playfair Display", serif;
+  font-size: clamp(3.8rem, 7vw, 6.7rem);
+  font-weight: 600;
+  line-height: 0.97;
+  letter-spacing: -0.055em;
+
+  color: var(--text);
+}
+
+.hero h1 span {
+  display: block;
+
+  color: var(--pink-dark);
+  font-style: italic;
+}
+
+.hero-description {
+  max-width: 550px;
+
+  margin-bottom: 34px;
+
+  font-size: 1.05rem;
+  line-height: 1.75;
+
+  color: var(--text-soft);
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.hero-info {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 32px;
+
+  margin-top: 46px;
+  padding-top: 30px;
+
+  border-top: 1px solid var(--border);
+}
+
+.hero-info-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero-info-icon {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: var(--pink-light);
+  color: var(--pink-dark);
+
+  font-size: 1.15rem;
+}
+
+.hero-info-item div {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-info-item strong {
+  font-size: 0.88rem;
+  color: var(--text);
+}
+
+.hero-info-item div span {
+  margin-top: 1px;
+
+  font-size: 0.75rem;
+  color: var(--text-light);
+}
+
+/* =========================================================
+   HERO VISUAL
+   ========================================================= */
+
+.hero-visual {
+  position: relative;
+}
+
+.hero-mobile-image {
+  display: none;
+}
+
+.hero-image-wrapper {
+  position: relative;
+
+  width: min(100%, 470px);
+  margin-left: auto;
+
+  padding: 14px;
+
+  border: 1px solid rgba(168, 97, 123, 0.14);
+  border-radius: 220px 220px 38px 38px;
+
+  background: rgba(255, 255, 255, 0.5);
+
+  box-shadow: var(--shadow-lg);
+
+  backdrop-filter: blur(8px);
+}
+
+.hero-image {
+  width: 100%;
+  height: 580px;
+
+  object-fit: cover;
+
+  border-radius: 210px 210px 28px 28px;
+}
+
+.hero-card {
+  position: absolute;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 16px 18px;
+
+  border: 1px solid rgba(168, 97, 123, 0.13);
+  border-radius: 18px;
+
+  background: rgba(255, 255, 255, 0.92);
+
+  box-shadow: var(--shadow-md);
+
+  backdrop-filter: blur(12px);
+}
+
+.hero-card-top {
+  top: 112px;
+  left: -64px;
+}
+
+.hero-card-bottom {
+  right: -34px;
+  bottom: 54px;
+
+  min-width: 210px;
+
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+}
+
+.hero-card-icon {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: var(--pink-light);
+  color: var(--pink-dark);
+}
+
+.hero-card div {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-card strong {
+  font-size: 0.86rem;
+  color: var(--text);
+}
+
+.hero-card span:not(.hero-card-icon) {
+  font-size: 0.74rem;
+  color: var(--text-light);
+}
+
+.hero-card-small {
+  font-size: 0.7rem !important;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  color: var(--pink-dark) !important;
+}
+
+.hero-decoration {
+  position: absolute;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+.hero-decoration-one {
+  width: 360px;
+  height: 360px;
+
+  right: -190px;
+  bottom: 2%;
+
+  border: 1px solid rgba(168, 97, 123, 0.13);
+}
+
+.hero-decoration-two {
+  width: 180px;
+  height: 180px;
+
+  left: -95px;
+  top: 20%;
+
+  background: rgba(255, 217, 231, 0.25);
+}
+
+/* =========================================================
+   SOBRE
+   ========================================================= */
+
+.about {
+  padding: 130px 0;
+
+  background: var(--white);
+}
+
+.about-container {
+  display: grid;
+  grid-template-columns: 1fr 0.85fr;
+  gap: 100px;
+  align-items: end;
+}
+
+.about-content {
+  padding-bottom: 5px;
+}
+
+.about-content p {
+  font-size: 1.05rem;
+  line-height: 1.85;
+
+  color: var(--text-soft);
+}
+
+.about-content p + p {
+  margin-top: 22px;
+}
+
+/* =========================================================
+   AGENDAMENTO
+   ========================================================= */
+
+.booking {
+  padding: 130px 0;
+
+  overflow: hidden;
+
+  background: linear-gradient(135deg, #fff1f6 0%, #ffe5ef 100%);
+}
+
+.booking::before {
+  content: "";
+
+  position: absolute;
+  top: -260px;
+  right: -200px;
+
+  width: 520px;
+  height: 520px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.booking-container {
+  position: relative;
+  z-index: 2;
+
+  display: grid;
+  grid-template-columns: 1fr 0.85fr;
+  align-items: center;
+  gap: 110px;
+}
+
+.booking-content {
+  max-width: 590px;
+}
+
+.booking-content h2 {
+  max-width: 560px;
+
+  margin-bottom: 24px;
+
+  font-size: clamp(2.7rem, 5vw, 4.9rem);
+}
+
+.booking-content > p {
+  max-width: 560px;
+
+  font-size: 1rem;
+  line-height: 1.8;
+
+  color: var(--text-soft);
+}
+
+.booking-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  margin: 38px 0;
+}
+
+.booking-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+
+  padding: 18px 20px;
+
+  border: 1px solid rgba(168, 97, 123, 0.1);
+  border-radius: 18px;
+
+  background: rgba(255, 255, 255, 0.57);
+
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.booking-step:hover {
+  transform: translateX(5px);
+
+  background: rgba(255, 255, 255, 0.83);
+
+  box-shadow: var(--shadow-sm);
+}
+
+.booking-step-number {
+  min-width: 42px;
+
+  font-family: "Playfair Display", serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+
+  color: var(--pink-dark);
+}
+
+.booking-step strong {
+  font-size: 0.94rem;
+  color: var(--text);
+}
+
+.booking-step p {
+  margin-top: 2px;
+
+  font-size: 0.82rem;
+  color: var(--text-light);
+}
+
+.button-booking {
+  min-width: 220px;
+}
+
+/* =========================================================
+   PREVIEW DO AGENDAMENTO
+   ========================================================= */
+
+.booking-preview {
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.booking-phone {
+  position: relative;
+
+  width: 300px;
+
+  padding: 10px;
+
+  border: 1px solid rgba(168, 97, 123, 0.18);
+  border-radius: 46px;
+
+  background: #332a2e;
+
+  box-shadow: 0 34px 70px rgba(88, 44, 60, 0.2);
+
+  transform: rotate(3deg);
+}
+
+.booking-phone-screen {
+  height: 600px;
+
+  overflow: hidden;
+
+  border-radius: 38px;
+
+  background: var(--white);
+}
+
+.booking-phone-screen img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: top center;
+}
+
+.booking-phone-top {
+  position: absolute;
+  top: 21px;
+  left: 50%;
+  z-index: 3;
+
+  transform: translateX(-50%);
+}
+
+.booking-phone-top span {
+  display: block;
+
+  width: 82px;
+  height: 21px;
+
+  border-radius: var(--radius-full);
+
+  background: #332a2e;
+}
+
+.booking-floating-card {
+  position: absolute;
+  right: -18px;
+  bottom: 85px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 16px 20px;
+
+  border: 1px solid var(--border);
+  border-radius: 18px;
+
+  background: rgba(255, 255, 255, 0.95);
+
+  box-shadow: var(--shadow-md);
+}
+
+.booking-floating-card > span {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: var(--pink-light);
+  color: var(--pink-dark);
+}
+
+.booking-floating-card div {
+  display: flex;
+  flex-direction: column;
+}
+
+.booking-floating-card strong {
+  font-size: 0.84rem;
+}
+
+.booking-floating-card small {
+  color: var(--text-light);
+}
+
+/* =========================================================
+   INSTAGRAM
+   ========================================================= */
+
+.instagram {
+  padding: 130px 0;
+
+  background: var(--white);
+}
+
+.instagram-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.instagram-heading {
+  margin: 0 auto 55px;
+
+  text-align: center;
+}
+
+.instagram-heading .section-eyebrow {
+  justify-content: center;
+}
+
+.instagram-heading .section-eyebrow::before {
+  display: none;
+}
+
+.instagram-heading p {
+  max-width: 580px;
+
+  margin: 22px auto 0;
+
+  font-size: 1rem;
+  line-height: 1.75;
+
+  color: var(--text-soft);
+}
+
+.instagram-carousel {
+  width: 100%;
+  max-width: 540px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin: 0 auto;
+}
+
+.instagram-carousel-viewport {
+  width: 100%;
+  height: 620px;
+
+  display: flex;
+  align-items: flex-start;
+
+  overflow: hidden;
+
+  border-radius: 24px;
+}
+
+.instagram-slide {
+  width: 100%;
+  min-width: 100%;
+  flex: 0 0 100%;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+
+  transition: transform 0.4s ease;
+}
+
+.instagram-post {
+  width: 100%;
+  min-width: 0;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+
+  overflow: hidden;
+
+  border-radius: 24px;
+
+  background: var(--white);
+
+  box-shadow: var(--shadow-sm);
+}
+
+.instagram-post .instagram-media {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+
+  margin: 0 !important;
+
+  border: 0 !important;
+  border-radius: 24px !important;
+}
+
+.instagram-post iframe {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.instagram-carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+
+  margin-top: 26px;
+}
+
+.instagram-carousel-button {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+
+  background: var(--background-soft);
+  color: var(--pink-dark);
+
+  font-size: 1.2rem;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.instagram-carousel-button:hover {
+  transform: translateY(-2px);
+
+  background: var(--pink-light);
+  border-color: rgba(168, 97, 123, 0.4);
+}
+
+.instagram-carousel-counter {
+  min-width: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  font-size: 0.82rem;
+
+  color: var(--text-light);
+}
+
+.instagram-carousel-counter strong {
+  color: var(--pink-dark);
+}
+
+/* =========================================================
+   CONTATO
+   ========================================================= */
+
+.contact {
+  padding: 30px 0 130px;
+
+  background: var(--white);
+}
+
+.contact-card {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 70px;
+
+  overflow: hidden;
+
+  padding: 65px 70px;
+
+  border-radius: var(--radius-lg);
+
+  background:
+    radial-gradient(
+      circle at 90% 20%,
+      rgba(255, 255, 255, 0.5),
+      transparent 35%
+    ),
+    linear-gradient(135deg, var(--pink-light), #f4bace);
+}
+
+.contact-card::after {
+  content: "";
+
+  position: absolute;
+  right: -90px;
+  bottom: -150px;
+
+  width: 330px;
+  height: 330px;
+
+  border: 1px solid rgba(168, 97, 123, 0.18);
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+.contact-content {
+  position: relative;
+  z-index: 2;
+
+  max-width: 600px;
+}
+
+.contact-content h2 {
+  margin-bottom: 18px;
+
+  font-size: clamp(2.6rem, 5vw, 4.6rem);
+}
+
+.contact-content p {
+  max-width: 520px;
+
+  color: #6e5760;
+  line-height: 1.75;
+}
+
+.contact-actions {
+  position: relative;
+  z-index: 2;
+
+  min-width: 220px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.button-whatsapp {
+  width: 100%;
+
+  background: var(--pink-dark);
+  color: var(--white);
+
+  box-shadow: 0 14px 30px rgba(168, 97, 123, 0.22);
+}
+
+.button-whatsapp:hover {
+  background: #934f68;
+}
+
+.contact-instagram-link {
+  font-size: 0.83rem;
+  font-weight: 700;
+
+  color: var(--pink-dark);
+
+  transition: opacity 0.2s ease;
+}
+
+.contact-instagram-link:hover {
+  opacity: 0.7;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.footer {
+  padding: 52px 0 40px;
+
+  background: #3e3237;
+  color: var(--white);
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 40px;
+}
+
+.footer .brand-name {
+  color: var(--white);
+}
+
+.footer .brand-subtitle {
+  color: var(--pink-light);
+}
+
+.footer-brand p {
+  margin-top: 12px;
+
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+
+.footer-links a {
+  font-size: 0.82rem;
+
+  color: rgba(255, 255, 255, 0.65);
+
+  transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: var(--pink-light);
+}
+
+.footer-copyright {
+  grid-column: 1 / -1;
+
+  padding-top: 26px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* =========================================================
+   RESPONSIVO
+   ========================================================= */
+
+@media (max-width: 1050px) {
+  .hero-container {
+    gap: 50px;
+  }
+
+  .hero h1 {
+    font-size: clamp(3.5rem, 7vw, 5.4rem);
+  }
+
+  .hero-image {
+    height: 510px;
+  }
+
+  .hero-card-top {
+    left: -30px;
+  }
+
+  .hero-card-bottom {
+    right: -15px;
+  }
+
+  .booking-container {
+    gap: 70px;
+  }
+
+  .contact-card {
+    padding: 58px 50px;
+  }
+}
+
+@media (max-width: 900px) {
+  .header-nav {
+    display: none;
+  }
+
+  .hero {
+    min-height: auto;
+
+    padding: 75px 0 90px;
+  }
+
+  .hero-container {
+    grid-template-columns: 1fr;
+    gap: 70px;
+  }
+
+  .hero-content {
+    max-width: 680px;
+  }
+
+  .hero-visual {
+    display: none;
+  }
+
+  .hero-description {
+    margin-bottom: 0;
+  }
+
+  .hero-mobile-image {
+    display: block;
+    width: 100%;
+    margin: 28px 0;
+    overflow: hidden;
+    border-radius: 28px;
+    background: var(--pink-light);
+    box-shadow: var(--shadow-md);
+  }
+
+  .hero-mobile-image img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  .about-container {
+    grid-template-columns: 1fr;
+    gap: 38px;
+  }
+
+  .about-content {
+    max-width: 680px;
+  }
+
+  .booking-container {
+    grid-template-columns: 1fr;
+    gap: 80px;
+  }
+
+  .booking-content {
+    max-width: 680px;
+  }
+
+  .booking-preview {
+    max-width: 480px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .contact-card {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .contact-actions {
+    align-items: flex-start;
+    width: fit-content;
+  }
+
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .footer-links {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 700px) {
+  .container {
+    width: min(calc(100% - 32px), var(--container));
+  }
+
+  .header-container {
+    min-height: 72px;
+  }
+
+  .brand-name {
+    font-size: 1.2rem;
+  }
+
+  .button-header {
+    min-height: 42px;
+
+    padding: 0 16px;
+
+    font-size: 0.76rem;
+  }
+
+  .hero {
+    padding: 58px 0 78px;
+  }
+
+  .hero h1 {
+    margin-bottom: 22px;
+
+    font-size: clamp(3.25rem, 15vw, 5rem);
+  }
+
+  .hero-description {
+    font-size: 0.96rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-actions .button {
+    width: 100%;
+  }
+
+  .hero-info {
+    grid-template-columns: 1fr;
+    gap: 18px;
+
+    margin-top: 34px;
+  }
+
+  .hero-image-wrapper {
+    width: calc(100% - 24px);
+
+    padding: 10px;
+
+    border-radius: 180px 180px 30px 30px;
+  }
+
+  .hero-image {
+    height: 480px;
+
+    border-radius: 170px 170px 22px 22px;
+  }
+
+  .hero-card-top {
+    left: -12px;
+    top: 100px;
+  }
+
+  .hero-card-bottom {
+    right: -12px;
+    bottom: 38px;
+  }
+
+  .about,
+  .booking,
+  .instagram {
+    padding: 90px 0;
+  }
+
+  .section-heading h2 {
+    font-size: clamp(2.5rem, 12vw, 3.7rem);
+  }
+
+  .booking-content h2,
+  .contact-content h2 {
+    font-size: clamp(2.5rem, 12vw, 3.8rem);
+  }
+
+  .booking-phone {
+    width: 270px;
+  }
+
+  .booking-phone-screen {
+    height: 540px;
+  }
+
+  .booking-floating-card {
+    right: 0;
+    bottom: 55px;
+  }
+
+  .instagram-carousel {
+    max-width: 520px;
+  }
+
+  .instagram-carousel-controls {
+    order: -1;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+
+  .contact {
+    padding: 10px 0 90px;
+  }
+
+  .contact-card {
+    padding: 48px 28px;
+
+    border-radius: 28px;
+  }
+
+  .contact-actions {
+    width: 100%;
+  }
+
+  .button-whatsapp {
+    width: 100%;
+  }
+
+  .footer {
+    padding-top: 45px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    width: min(calc(100% - 26px), var(--container));
+  }
+
+  .header-container {
+    gap: 12px;
+  }
+
+  .brand-name {
+    font-size: 1.05rem;
+  }
+
+  .brand-subtitle {
+    font-size: 0.53rem;
+  }
+
+  .button-header {
+    padding: 0 14px;
+  }
+
+  .hero {
+    padding-top: 48px;
+  }
+
+  .hero-eyebrow,
+  .section-eyebrow {
+    font-size: 0.68rem;
+  }
+
+  .hero h1 {
+    font-size: 3.3rem;
+  }
+
+  .hero-image-wrapper {
+    width: calc(100% - 10px);
+  }
+
+  .hero-image {
+    height: 430px;
+  }
+
+  .hero-card {
+    padding: 12px 14px;
+  }
+
+  .hero-card-top {
+    left: -5px;
+  }
+
+  .hero-card-bottom {
+    right: -5px;
+    bottom: 28px;
+
+    min-width: 175px;
+  }
+
+  .booking-step {
+    padding: 16px;
+  }
+
+  .booking-phone {
+    width: 245px;
+  }
+
+  .booking-phone-screen {
+    height: 490px;
+  }
+
+  .booking-floating-card {
+    right: -5px;
+
+    padding: 13px 15px;
+  }
+
+  .instagram-carousel {
+    max-width: 100%;
+  }
+
+  .instagram-carousel-controls {
+    order: -1;
+    margin-top: 0;
+    margin-bottom: 18px;
+    gap: 18px;
+  }
+
+  .instagram-carousel-button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .footer-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 24px;
+  }
+}
