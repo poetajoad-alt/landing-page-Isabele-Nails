@@ -41,6 +41,14 @@ const currentYear = document.getElementById("current-year");
 
 const internalLinks = document.querySelectorAll('a[href^="#"]');
 
+const mobileMenuToggle = document.getElementById("mobile-menu-toggle");
+
+const mobileMenu = document.getElementById("mobile-menu");
+
+const mobileMenuLinks = document.querySelectorAll(".mobile-menu a");
+
+const bottomNavItems = document.querySelectorAll(".bottom-nav-item");
+
 /* =========================================================
    ANO AUTOMÁTICO
    ========================================================= */
@@ -114,6 +122,70 @@ if (instagramSlides.length > 0) {
 }
 
 /* =========================================================
+   MENU MOBILE
+   ========================================================= */
+
+function closeMobileMenu() {
+  if (!mobileMenuToggle || !mobileMenu) {
+    return;
+  }
+
+  mobileMenuToggle.classList.remove("is-open");
+  mobileMenu.classList.remove("is-open");
+
+  mobileMenuToggle.setAttribute("aria-expanded", "false");
+  mobileMenuToggle.setAttribute("aria-label", "Abrir menu");
+}
+
+if (mobileMenuToggle && mobileMenu) {
+  mobileMenuToggle.addEventListener("click", (event) => {
+    event.stopPropagation();
+
+    const isOpen = mobileMenu.classList.toggle("is-open");
+
+    mobileMenuToggle.classList.toggle("is-open", isOpen);
+
+    mobileMenuToggle.setAttribute("aria-expanded", String(isOpen));
+
+    mobileMenuToggle.setAttribute(
+      "aria-label",
+      isOpen ? "Fechar menu" : "Abrir menu",
+    );
+  });
+}
+
+mobileMenuLinks.forEach((link) => {
+  link.addEventListener("click", () => {
+    closeMobileMenu();
+  });
+});
+
+document.addEventListener("click", (event) => {
+  if (!mobileMenu || !mobileMenuToggle) {
+    return;
+  }
+
+  const clickedInsideMenu = mobileMenu.contains(event.target);
+  const clickedToggle = mobileMenuToggle.contains(event.target);
+
+  if (!clickedInsideMenu && !clickedToggle) {
+    closeMobileMenu();
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeMobileMenu();
+  }
+});
+
+window.addEventListener("resize", () => {
+  if (window.innerWidth > 900) {
+    closeMobileMenu();
+  }
+});
+
+/* =========================================================
    WHATSAPP
    ========================================================= */
 
@@ -184,6 +256,60 @@ window.addEventListener("scroll", updateHeader, {
 });
 
 updateHeader();
+
+/* =========================================================
+   MENU INFERIOR - ITEM ATIVO
+   ========================================================= */
+
+const navigationSectionIds = [
+  "inicio",
+  "sobre",
+  "agendamento",
+  "instagram",
+  "contato",
+];
+
+function updateBottomNavActive() {
+  if (bottomNavItems.length === 0) {
+    return;
+  }
+
+  const headerOffset = header ? header.offsetHeight : 0;
+
+  const scrollPosition = window.scrollY + headerOffset + 140;
+
+  let activeSectionId = "inicio";
+
+  navigationSectionIds.forEach((sectionId) => {
+    const section = document.getElementById(sectionId);
+
+    if (section && section.offsetTop <= scrollPosition) {
+      activeSectionId = sectionId;
+    }
+  });
+
+  bottomNavItems.forEach((item) => {
+    const itemTarget = item.getAttribute("href");
+
+    item.classList.toggle("active", itemTarget === `#${activeSectionId}`);
+  });
+}
+
+bottomNavItems.forEach((item) => {
+  item.addEventListener("click", () => {
+    bottomNavItems.forEach((navItem) => {
+      navItem.classList.remove("active");
+    });
+
+    item.classList.add("active");
+  });
+});
+
+window.addEventListener("scroll", updateBottomNavActive, {
+  passive: true,
+});
+
+updateBottomNavActive();
 
 /* =========================================================
    ANIMAÇÃO DE ENTRADA

@@ -30,6 +30,7 @@
       <nav class="header-nav" aria-label="Navegação principal">
         <a href="#sobre">Sobre</a>
         <a href="#agendamento">Agendamento</a>
+        <a href="#instagram">Trabalhos</a>
         <a href="#contato">Contato</a>
       </nav>
 
@@ -37,7 +38,30 @@
         Agendar horário
       </a>
 
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
     </div>
+
+    <div class="mobile-menu" id="mobile-menu">
+
+      <nav class="mobile-menu-nav" aria-label="Navegação mobile">
+        <a href="#inicio">Início</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#agendamento">Agendamento</a>
+        <a href="#instagram">Trabalhos</a>
+        <a href="#contato">Contato</a>
+      </nav>
+
+      <a href="#agendamento" class="button button-primary mobile-menu-booking">
+        Agendar meu horário
+      </a>
+
+    </div>
+
   </header>
 
 
@@ -133,7 +157,7 @@
 
           <div class="hero-image-wrapper">
 
-            <img src="assets/isabele-hero.jpg" alt="Trabalho realizado por Isabele Mariana Nails" class="hero-image">
+            <img src="assets/isabele-hero.png" alt="Trabalho realizado por Isabele Mariana Nails" class="hero-image">
 
           </div>
 
@@ -416,6 +440,57 @@
     </section>
 
   </main>
+
+
+  <!-- MENU INFERIOR MOBILE -->
+  <nav class="bottom-nav" aria-label="Navegação rápida">
+
+    <a href="#inicio" class="bottom-nav-item active">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 10.5 12 3l9 7.5"></path>
+        <path d="M5 9.5V21h14V9.5"></path>
+        <path d="M9 21v-6h6v6"></path>
+      </svg>
+      <span>Início</span>
+    </a>
+
+    <a href="#agendamento" class="bottom-nav-item">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+        <path d="M16 3v4"></path>
+        <path d="M8 3v4"></path>
+        <path d="M3 10h18"></path>
+        <path d="m9 16 2 2 4-4"></path>
+      </svg>
+      <span>Agendar</span>
+    </a>
+
+    <a href="#sobre" class="bottom-nav-item">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="8" r="4"></circle>
+        <path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"></path>
+      </svg>
+      <span>Sobre</span>
+    </a>
+
+    <a href="#instagram" class="bottom-nav-item">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+        <circle cx="12" cy="12" r="4"></circle>
+        <circle cx="17.5" cy="6.5" r="1"></circle>
+      </svg>
+      <span>Trabalhos</span>
+    </a>
+
+    <a href="#contato" class="bottom-nav-item">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.8 9.8 0 0 1-4-.9L3 21l1.8-4.7A8.5 8.5 0 1 1 21 11.5Z"></path>
+        <path d="M8.5 9.5c.5 2.4 2.1 4 4.5 5"></path>
+      </svg>
+      <span>Contato</span>
+    </a>
+
+  </nav>
 
 
   <!-- FOOTER -->
