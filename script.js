@@ -63,6 +63,13 @@ if (currentYear) {
 
 if (bookingLink) {
   bookingLink.href = siteConfig.bookingUrl;
+  bookingLink.addEventListener("click", () => {
+    if (typeof window.gtag === "function") {
+      window.gtag("event", "landing_agendamento_click", {
+        origem: "landing_comercial",
+      });
+    }
+  });
 }
 
 /* =========================================================
@@ -197,6 +204,13 @@ function createWhatsAppLink() {
 
 if (whatsappLink) {
   whatsappLink.href = createWhatsAppLink();
+  whatsappLink.addEventListener("click", () => {
+    if (typeof window.gtag === "function") {
+      window.gtag("event", "landing_whatsapp_click", {
+        origem: "landing_comercial",
+      });
+    }
+  });
 }
 
 /* =========================================================
