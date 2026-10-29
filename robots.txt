@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://isabele-nails.pages.dev/sitemap.xml
+Sitemap: https://isabelemariananails.com.br/sitemap.xml
