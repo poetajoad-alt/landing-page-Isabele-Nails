@@ -16,6 +16,21 @@ const siteConfig = {
 };
 
 /* =========================================================
+   ANALYTICS — EVENTOS DA LANDING
+   ========================================================= */
+
+function trackLandingEvent(nome, parametros = {}) {
+  if (typeof window.gtag !== "function") {
+    return;
+  }
+
+  window.gtag("event", nome, {
+    origem: "landing_comercial",
+    ...parametros,
+  });
+}
+
+/* =========================================================
    ELEMENTOS
    ========================================================= */
 
@@ -64,11 +79,10 @@ if (currentYear) {
 if (bookingLink) {
   bookingLink.href = siteConfig.bookingUrl;
   bookingLink.addEventListener("click", () => {
-    if (typeof window.gtag === "function") {
-      window.gtag("event", "landing_agendamento_click", {
-        origem: "landing_comercial",
-      });
-    }
+    trackLandingEvent("landing_agendamento_click", {
+      destino: "aplicativo",
+      posicao: "secao_agendamento",
+    });
   });
 }
 
@@ -78,6 +92,12 @@ if (bookingLink) {
 
 if (contactInstagramLink) {
   contactInstagramLink.href = siteConfig.instagramUrl;
+  contactInstagramLink.addEventListener("click", () => {
+    trackLandingEvent("landing_instagram_click", {
+      destino: "instagram",
+      posicao: "secao_contato",
+    });
+  });
 }
 
 /* =========================================================
@@ -205,11 +225,10 @@ function createWhatsAppLink() {
 if (whatsappLink) {
   whatsappLink.href = createWhatsAppLink();
   whatsappLink.addEventListener("click", () => {
-    if (typeof window.gtag === "function") {
-      window.gtag("event", "landing_whatsapp_click", {
-        origem: "landing_comercial",
-      });
-    }
+    trackLandingEvent("landing_whatsapp_click", {
+      destino: "whatsapp",
+      posicao: "secao_contato",
+    });
   });
 }
 
@@ -245,6 +264,36 @@ internalLinks.forEach((link) => {
       behavior: "smooth",
     });
   });
+});
+
+/* =========================================================
+   SEÇÕES VISUALIZADAS — UMA VEZ POR CARREGAMENTO
+   ========================================================= */
+
+const secoesMonitoradas = ["sobre", "agendamento", "instagram", "contato"];
+
+const observadorSecoes = new IntersectionObserver(
+  (entradas, observador) => {
+    entradas.forEach((entrada) => {
+      if (!entrada.isIntersecting) {
+        return;
+      }
+
+      trackLandingEvent("landing_secao_visualizada", {
+        secao: entrada.target.id,
+      });
+
+      observador.unobserve(entrada.target);
+    });
+  },
+  { threshold: 0.15 },
+);
+
+secoesMonitoradas.forEach((id) => {
+  const secao = document.getElementById(id);
+  if (secao) {
+    observadorSecoes.observe(secao);
+  }
 });
 
 /* =========================================================
