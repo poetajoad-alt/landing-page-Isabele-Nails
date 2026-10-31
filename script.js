@@ -10,7 +10,7 @@
 const siteConfig = {
   bookingUrl: "https://isabelenailsapp.vercel.app/",
   instagramUrl: "https://www.instagram.com/isabellemariananails/",
-  whatsappNumber: "5511933390048",
+  whatsappNumber: "5511949494062",
   whatsappMessage:
     "Olá, Isabele! Vim pelo seu site e gostaria de saber mais sobre os atendimentos.",
 };
