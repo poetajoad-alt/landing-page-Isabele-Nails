@@ -1,0 +1,57 @@
+/* Páginas legais públicas | Isabele Mariana Nails */
+:root {
+  --legal-ink: #3f3338;
+  --legal-muted: #78666d;
+  --legal-rose: #a8617b;
+  --legal-bg: #fffafb;
+  --legal-border: rgba(168, 97, 123, .18);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; color: var(--legal-ink); background: var(--legal-bg); font: 16px/1.75 "DM Sans", Arial, sans-serif; }
+a { color: var(--legal-rose); text-underline-offset: 3px; }
+a:hover { text-decoration-thickness: 2px; }
+a:focus-visible { outline: 3px solid var(--legal-rose); outline-offset: 4px; border-radius: 3px; }
+.legal-shell { width: min(100% - 40px, 960px); margin: 0 auto; }
+.legal-topbar { background: #fff; border-bottom: 1px solid var(--legal-border); }
+.legal-topbar .legal-shell { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 18px 0; }
+.legal-logo { display: inline-flex; flex-direction: column; gap: 0; text-decoration: none; line-height: 1.2; color: var(--legal-ink); }
+.legal-logo strong { font: 600 clamp(20px, 3vw, 26px) "Playfair Display", Georgia, serif; }
+.legal-logo span { font-size: 13px; color: var(--legal-rose); letter-spacing: .23em; text-transform: uppercase; }
+.legal-back { color: var(--legal-rose); text-decoration: none; font-size: 15px; font-weight: 700; white-space: nowrap; }
+.legal-hero { padding: 70px 0 34px; }
+.legal-eyebrow { display: inline-block; text-transform: uppercase; letter-spacing: .15em; font-size: 12px; font-weight: 800; color: var(--legal-rose); }
+.legal-hero h1 { font: 600 clamp(35px, 5.8vw, 55px)/1.18 "Playfair Display", Georgia, serif; margin: 12px 0 16px; }
+.legal-lead { color: var(--legal-muted); max-width: 750px; font-size: clamp(17px, 2.1vw, 19px); }
+.legal-date { font-size: 14px; color: var(--legal-muted); margin: 18px 0 0; }
+.legal-layout { display: grid; grid-template-columns: minmax(190px, 235px) minmax(0, 1fr); gap: 36px; align-items: start; padding-bottom: 80px; }
+.legal-index { position: sticky; top: 24px; border: 1px solid var(--legal-border); border-radius: 20px; background: #fff; padding: 22px; }
+.legal-index h2 { font-size: 15px; margin: 0 0 12px; }
+.legal-index a { display: block; padding: 7px 0; font-size: 14px; color: var(--legal-muted); text-decoration: none; }
+.legal-index a:hover { color: var(--legal-rose); text-decoration: underline; }
+.legal-content { min-width: 0; }
+.legal-intro, .legal-section, .terms-section { padding: 28px 30px; background: #fff; border: 1px solid var(--legal-border); border-radius: 20px; margin-bottom: 18px; overflow-wrap: anywhere; }
+.legal-section, .terms-section { scroll-margin-top: 26px; }
+.legal-section h2, .terms-section h2 { font: 600 clamp(23px, 3.2vw, 29px)/1.25 "Playfair Display", Georgia, serif; margin: 0 0 16px; }
+.terms-section h3, .legal-section h3 { font-size: 17px; margin: 25px 0 9px; color: #7d4057; }
+.legal-section p, .terms-section p, .legal-intro p { margin: 0 0 15px; }
+.legal-section p:last-child, .terms-section p:last-child, .legal-intro p:last-child { margin-bottom: 0; }
+.legal-section ul, .terms-section ul { padding-left: 22px; margin: 14px 0; }
+.legal-section li, .terms-section li { margin: 7px 0; }
+.terms-section { display: grid; grid-template-columns: 42px 1fr; gap: 10px; }
+.terms-section-number { font-size: 15px; font-weight: 800; color: var(--legal-rose); padding-top: 4px; }
+.legal-note { background: #fff3f7; border: 1px solid var(--legal-border); border-radius: 14px; padding: 15px 18px; margin-bottom: 18px; }
+.legal-footer { border-top: 1px solid var(--legal-border); background: #fff; padding: 30px 0 42px; }
+.legal-footer .legal-shell { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 14px; color: var(--legal-muted); }
+.legal-footer nav { display: flex; flex-wrap: wrap; gap: 18px; }
+.legal-footer a { color: var(--legal-rose); text-decoration: none; }
+@media (max-width: 760px) {
+  .legal-shell { width: min(100% - 28px, 960px); }
+  .legal-hero { padding: 45px 0 25px; }
+  .legal-layout { display: block; padding-bottom: 42px; }
+  .legal-index { position: static; margin-bottom: 20px; }
+  .legal-intro, .legal-section, .terms-section { padding: 22px 20px; }
+  .terms-section { grid-template-columns: 30px 1fr; }
+  .legal-topbar .legal-shell { padding: 14px 0; }
+  .legal-back { font-size: 14px; }
+}
