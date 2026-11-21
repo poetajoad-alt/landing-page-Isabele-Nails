@@ -398,11 +398,12 @@ def spotlight_section(latest, highlights):
         '<div class="wrap"><div class="blog-feature-grid' + layout + '">'
         '<div class="blog-recent-heading"><span class="eyebrow">Seleção da Isabele</span>'
         '<h2 class="section-title" id="spotlight-title">Mais recente</h2></div>'
+        + main_card +
         '<div class="blog-highlights-heading">'
         '<h2 id="highlights-title">Destaques</h2>'
         '<a class="blog-view-all" href="/blog/todos/">Ver todos '
         '<span aria-hidden="true">→</span></a></div>'
-        + main_card + sidebar + '</div>'
+        + sidebar + '</div>'
         '</div></section>'
     )
 

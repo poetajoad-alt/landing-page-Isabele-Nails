@@ -51,6 +51,17 @@ class BlogHighlightsTests(unittest.TestCase):
         self.assertNotIn("Dicas para descobrir novos cuidados", html)
         self.assertIn('class="blog-recent-heading"', html)
         self.assertIn('class="blog-highlights-heading"', html)
+        # Mesmo sem CSS novo no cache do navegador, o fluxo mobile segue:
+        # título do mais recente -> card grande -> título dos destaques -> carrossel.
+        self.assertLess(
+            html.index('class="blog-recent-heading"'),
+            html.index('class="blog-feature-card"'))
+        self.assertLess(
+            html.index('class="blog-feature-card"'),
+            html.index('class="blog-highlights-heading"'))
+        self.assertLess(
+            html.index('class="blog-highlights-heading"'),
+            html.index('data-blog-carousel'))
         self.assertIn('href="/blog/novo/"', html)
         self.assertIn('aria-label="Artigos selecionados em destaque"', html)
         self.assertIn('style="--stack-count:3"', html)
