@@ -41,7 +41,8 @@ class BlogHighlightsTests(unittest.TestCase):
         html = build_blog.spotlight_section([post("a"), post("b")])
         self.assertIn('id="spotlight-title"', html)
         self.assertEqual(html.count('width="1200" height="900"'), 2)
-        self.assertEqual(html.count('class="blog-feature-card'), 4)
+        self.assertEqual(html.count('class="blog-feature-card"'), 1)
+        self.assertEqual(html.count('class="blog-feature-card blog-feature-card--secondary"'), 1)
         self.assertIn('loading="eager"', html)
         self.assertIn('loading="lazy"', html)
 
