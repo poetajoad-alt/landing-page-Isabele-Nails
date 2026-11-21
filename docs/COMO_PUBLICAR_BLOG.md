@@ -51,3 +51,20 @@ O script de geração usa apenas a biblioteca-padrão do Python (3.12) e não ac
 - `scripts/build_blog.py`: gerador de HTML e sitemap.
 - `.github/workflows/blog-build.yml`: automação da publicação.
 - `blog/blog.css`: estilo visual, independente da landing.
+
+
+## Imagens dentro do texto (H2, H3 e outros parágrafos)
+
+1. Em **Artigos do Blog**, abra o artigo e localize o campo **Texto completo**.
+2. Posicione o cursor onde deseja a imagem (por exemplo, após o segundo parágrafo de um H2).
+3. Use a opção de inserir imagem da barra do editor. Você pode selecionar uma imagem já enviada ou fazer upload.
+4. Escreva um texto ALT que descreva o que realmente aparece na foto. Se fizer sentido, adicione uma legenda.
+5. Salve o artigo. A automação gera o HTML, preserva a posição da imagem e ajusta o CSS para **não cortar as fotos**, tanto no desktop como no celular.
+
+A imagem de capa é independente: ela permanece no campo **Imagem de capa**.
+
+Para o primeiro artigo de teste, há **duas imagens ilustrativas de bancos** entre os parágrafos, além da capa institucional existente:
+- **Hidratação:** fotografia de Ron Lach, Pexels: https://www.pexels.com/photo/person-applying-hand-cream-8140918/
+- **Manutenção e unhas bem cuidadas:** fotografia do Unsplash, coleção Nail Spa: https://unsplash.com/s/photos/nail-spa
+
+Essas duas imagens estão inicialmente referenciadas por URLs das plataformas de imagens (não são trabalhos da Isabele e ainda não foram copiadas para `assets/`). Antes de publicar definitivamente, recomendamos baixá-las dos bancos e enviá-las ao CMS para hospedagem própria, mantendo uma nota de origem.
