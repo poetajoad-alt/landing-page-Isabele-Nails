@@ -13,6 +13,8 @@ on:
       - 'scripts/build_blog.py'
       - 'scripts/test_blog_captions.py'
       - 'scripts/test_blog_highlights.py'
+      - 'scripts/test_landing_blog_analytics.cjs'
+      - 'blog/landing-blog-analytics.js'
       - '.github/workflows/blog-build.yml'
   workflow_dispatch:
 
@@ -44,6 +46,9 @@ jobs:
 
       - name: Testar legendas e seguranca do HTML
         run: python -m unittest discover -s scripts -p 'test_blog_*.py' -v
+
+      - name: Testar eventos GA4 de acesso ao blog
+        run: node --test scripts/test_landing_blog_analytics.cjs
 
       - name: Gerar artigos e listagem
         shell: bash
