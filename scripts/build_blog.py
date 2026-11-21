@@ -9,6 +9,8 @@ import argparse
 import html
 import json
 import re
+import subprocess
+from functools import lru_cache
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlparse
@@ -222,8 +224,66 @@ def article_html(post, preview):
         "ARTICLE_CONTENT": article
     })
 
+@lru_cache(maxsize=256)
+def published_timestamp(slug):
+    """Data da última passagem rascunho -> publicado, recuperada do histórico Git.
+
+    Usa a primeira revisão publicada da sequência atual, para que editar um
+    artigo antigo não o transforme artificialmente no mais recente.
+    """
+    path = "content/blog/posts/" + slug + ".json"
+    try:
+        history = subprocess.run(
+            ["git", "log", "--format=%H %ct", "--", path],
+            cwd=ROOT, capture_output=True, text=True, check=True,
+        ).stdout
+    except (OSError, subprocess.CalledProcessError):
+        return 0
+    earliest_published = 0
+    for line in history.splitlines():
+        fields = line.split()
+        if len(fields) != 2:
+            continue
+        commit, timestamp = fields
+        try:
+            old = subprocess.run(
+                ["git", "show", commit + ":" + path],
+                cwd=ROOT, capture_output=True, text=True, check=True,
+            ).stdout
+            snapshot = json.loads(old)
+        except (OSError, subprocess.CalledProcessError, json.JSONDecodeError):
+            continue
+        if not snapshot.get("published", False):
+            break
+        earliest_published = int(timestamp)
+    return earliest_published
+
+
+def newest_first(posts):
+    """Artigos publicados em ordem de publicação, sem depender da ordem alfabética."""
+    return sorted(
+        posts,
+        key=lambda p: (published_timestamp(p["slug"]), p["slug"]),
+        reverse=True,
+    )
+
+
+def select_spotlight(posts):
+    """O último publicado é principal; somente destaques CMS ocupam a direita."""
+    if not posts:
+        return None, [], []
+    ordered = newest_first(posts)
+    latest = ordered[0]
+    highlights = [p for p in ordered[1:] if p.get("featured") is True][:3]
+    selected = {p["slug"] for p in highlights}
+    remaining = [
+        p for p in ordered[1:] if p["slug"] not in selected
+    ]
+    return latest, highlights, remaining
+
+
 def ordered_featured(posts):
-    """Respeita seleção editorial no CMS; completa automaticamente se necessário."""
+    """Mantém o critério editorial usado na landing, sem afetar o destaque principal."""
     return sorted(posts, key=lambda post: not post.get("featured", False))
 
 
@@ -267,19 +327,41 @@ def more_card_html(post):
     )
 
 
-def spotlight_section(posts):
-    if not posts:
+def compact_spotlight_card_html(post):
+    """Card horizontal de apoio: capa à esquerda, texto à direita."""
+    url = "/blog/" + post["slug"] + "/"
+    return (
+        '<article class="blog-feature-card blog-feature-card--compact">'
+        '<a class="blog-feature-card__media" href="' + e(url) +
+        '" aria-label="Ler: ' + e(post["title"]) + '">'
+        '<img src="' + e(post["cover"]) + '" alt="' + e(post["coverAlt"]) +
+        '" width="1200" height="900" loading="lazy"></a>'
+        '<div class="blog-feature-card__body">'
+        '<span class="eyebrow">' + e(post["category"]) + '</span>'
+        '<h3><a href="' + e(url) + '">' + e(post["title"]) + '</a></h3>'
+        '<p>' + e(post["summary"]) + '</p>'
+        '<a class="blog-feature-card__link" href="' + e(url) +
+        '">Ler artigo <span aria-hidden="true">→</span></a>'
+        '</div></article>'
+    )
+
+
+def spotlight_section(latest, highlights):
+    if latest is None:
         return (
             '<section class="blog-spotlight"><div class="wrap">'
             '<h2 class="section-title">Conteúdos para você</h2>'
             '<p class="blog-empty">Estamos preparando novos artigos. Volte em breve!</p>'
             '</div></section>'
         )
-    cards = "\n".join(
-        spotlight_card_html(post, primary=index == 0)
-        for index, post in enumerate(posts)
-    )
-    layout = " blog-feature-grid--single" if len(posts) == 1 else ""
+    main_card = spotlight_card_html(latest, primary=True)
+    highlight_cards = "\n".join(compact_spotlight_card_html(p) for p in highlights)
+    sidebar = (
+        '<div class="blog-feature-stack" style="--stack-count:' +
+        str(len(highlights)) + '" aria-label="Artigos selecionados em destaque">' +
+        highlight_cards + '</div>'
+    ) if highlights else ""
+    layout = "" if highlights else " blog-feature-grid--single"
     return (
         '<section class="blog-spotlight" aria-labelledby="spotlight-title">'
         '<div class="wrap"><div class="blog-section-intro">'
@@ -288,7 +370,8 @@ def spotlight_section(posts):
         '<p class="blog-section-intro__description">'
         'Dicas para descobrir novos cuidados e escolher o próximo visual.'
         '</p></div>'
-        '<div class="blog-feature-grid' + layout + '">' + cards + '</div>'
+        '<div class="blog-feature-grid' + layout + '">' +
+        main_card + sidebar + '</div>'
         '</div></section>'
     )
 
@@ -408,13 +491,11 @@ def main():
             path.unlink()
     for post in visible:
         write_changed(BLOG / post["slug"] / "index.html", article_html(post, args.preview))
-    ordered = ordered_featured(visible)
-    selected = ordered[:2]
-    other = ordered[2:]
+    latest, highlights, other = select_spotlight(visible)
     listing_robots = "noindex,follow" if args.preview or not published else "index,follow"
     write_changed(BLOG / "index.html", render(INDEX_TPL, {
         "ROBOTS": listing_robots,
-        "SPOTLIGHT_SECTION": spotlight_section(selected),
+        "SPOTLIGHT_SECTION": spotlight_section(latest, highlights),
         "MORE_SECTION": more_section(other)
     }))
     if not args.preview:
