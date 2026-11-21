@@ -1,6 +1,7 @@
 # Pages CMS — editor visual para os artigos da Isabele Mariana Nails.
 # Uso: https://app.pagescms.org/ (entrar com a conta poetajoad-alt)
 # O conteúdo é gravado em content/blog/posts/*.json e publicado por GitHub Actions.
+# Revisão de configuração: atualizar o esquema em cache do Pages CMS para exibir featured.
 media:
   input: assets
   output: /assets
