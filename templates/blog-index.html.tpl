@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Piloto em revisão: trocar para index,follow somente após aprovação editorial. -->
+  <!-- Indexação definida pelo gerador conforme publicações aprovadas. -->
   <meta name="robots" content="{{ROBOTS}}">
   <title>Blog de cuidados com as unhas | Isabele Mariana Nails</title>
   <meta name="description" content="Dicas práticas sobre cuidados com as unhas, agendamento e beleza. Conteúdos da Isabele Mariana Nails, na região dos Pimentas, em Guarulhos.">
@@ -20,6 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/blog/blog.css">
+  <link rel="stylesheet" href="/blog/blog-home.css">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-H32L5X9SS9"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-H32L5X9SS9');</script>
 </head>
@@ -28,17 +29,17 @@
     <a class="brand" href="/" aria-label="Voltar à página inicial da Isabele Mariana Nails"><strong>Isabele Mariana</strong><small>Nails</small></a>
     <nav class="links" aria-label="Navegação do blog"><a href="/">Início</a><a href="/blog/" aria-current="page">Blog</a><a class="pill" href="https://isabelenailsapp.vercel.app/" target="_blank" rel="noopener noreferrer">Agendar horário</a></nav>
   </div></header>
-  <main>
-    <section class="hero"><div class="wrap">
-      <span class="eyebrow">Isabele Mariana Nails · Guarulhos</span>
-      <h1>Cuidados, beleza e inspiração.</h1>
-      <p>Dicas práticas para cuidar das suas unhas entre um atendimento e outro, conhecer bons hábitos e agendar seus momentos de autocuidado na região dos Pimentas.</p>
+  <main id="conteudo">
+    <section class="blog-hero" aria-labelledby="blog-heading"><div class="wrap blog-hero__inner">
+      <div class="blog-hero__text">
+        <span class="eyebrow">Blog Isabele Mariana Nails · Guarulhos</span>
+        <h1 id="blog-heading">Cuidados, beleza e inspiração.</h1>
+        <p>Descubra dicas, técnicas e inspirações para cuidar das unhas e escolher seu próximo estilo. Um espaço de beleza e autocuidado da Isabele Mariana Nails, nos Pimentas.</p>
+      </div>
+      <span class="blog-hero__tag" aria-hidden="true">Feito para inspirar você</span>
     </div></section>
-    <section class="listing"><div class="wrap">
-      <span class="eyebrow">Cuidados e dicas de beleza</span>
-      <h2 class="section-title">Conteúdos para você</h2>
-      {{POST_CARDS}}
-    </div></section>
+    {{SPOTLIGHT_SECTION}}
+    {{MORE_SECTION}}
   </main>
   <footer class="footer"><div class="wrap"><span>© Isabele Mariana Nails · Guarulhos, SP</span><a href="/">Voltar ao site</a></div></footer>
 </body>
