@@ -156,7 +156,7 @@ class BlogHighlightsTests(unittest.TestCase):
         self.assertIn('href="/blog/"', html)
         self.assertIn('class="blog-all__list"', html)
         self.assertNotIn(chr(92) + "n<article", html)
-        self.assertIn("\\n<article", html)
+        self.assertIn(chr(10) + "<article", html)
         self.assertNotIn("{{ALL_ARTICLES}}", html)
         preview = build_blog.all_articles_page(published_posts, "noindex,follow")
         self.assertIn('<meta name="robots" content="noindex,follow">', preview)
