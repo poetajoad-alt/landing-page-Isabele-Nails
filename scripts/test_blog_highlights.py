@@ -191,11 +191,56 @@ class BlogHighlightsTests(unittest.TestCase):
             html = index.read_text(encoding="utf-8")
             self.assertEqual(html.count('class="home-blog__card"'), 2)
             self.assertIn('home-blog__grid--two', html)
+            self.assertIn('home-blog__mobile-showcase', html)
+            self.assertIn('home-blog__mobile-primary', html)
             self.assertIn('href="/blog/a/"', html)
             self.assertIn('href="/blog/b/"', html)
             self.assertNotIn("placeholder", html)
             self.assertIn("BLOG_FEATURED_START", html)
             self.assertIn("BLOG_FEATURED_END", html)
+
+
+    def test_landing_mobile_latest_and_three_cms_highlights(self):
+        posts = [post("old", True), post("first", True), post("second", True),
+                 post("third", True), post("latest", True)]
+        times = {"old": 10, "first": 30, "second": 40, "third": 50, "latest": 90}
+        with patch.object(build_blog, "published_timestamp",
+                          side_effect=lambda slug: times[slug]):
+            html = build_blog.landing_mobile_showcase(posts)
+        self.assertIn('class="home-blog__card home-blog__mobile-primary"', html)
+        self.assertIn('data-home-blog-carousel', html)
+        self.assertEqual(html.count('class="home-blog__mini-card"'), 3)
+        self.assertEqual(html.count('data-home-blog-dot='), 3)
+        self.assertIn('href="/blog/todos/"', html)
+        self.assertIn('data-home-blog-prev', html)
+        self.assertIn('data-home-blog-next', html)
+        self.assertLess(html.index('class="home-blog__mobile-primary"') if
+                        'class="home-blog__mobile-primary"' in html else
+                        html.index('home-blog__mobile-primary'),
+                        html.index('home-blog__mobile-destaques'))
+        self.assertLess(html.index('/blog/third/'), html.index('/blog/second/'))
+        self.assertLess(html.index('/blog/second/'), html.index('/blog/first/'))
+        self.assertNotIn('href="/blog/old/"', html)
+        self.assertNotIn('href="/blog/latest/"', html[html.index('home-blog__mini-track'):])
+
+    def test_landing_mobile_one_highlight_or_no_highlights(self):
+        posts = [post("recent"), post("featured", True)]
+        times = {"recent": 20, "featured": 10}
+        with patch.object(build_blog, "published_timestamp",
+                          side_effect=lambda slug: times[slug]):
+            html = build_blog.landing_mobile_showcase(posts)
+        self.assertEqual(html.count('class="home-blog__mini-card"'), 1)
+        self.assertNotIn('data-home-blog-prev', html)
+        self.assertNotIn('data-home-blog-dot', html)
+        with patch.object(build_blog, "published_timestamp", return_value=10):
+            empty = build_blog.landing_mobile_showcase([post("only")])
+        self.assertIn("Novos destaques em breve.", empty)
+        self.assertEqual(build_blog.landing_mobile_showcase([]), "")
+        draft = post("draft", True)
+        draft["published"] = False
+        with patch.object(build_blog, "published_timestamp", return_value=10):
+            safe = build_blog.landing_mobile_showcase([post("safe"), draft])
+        self.assertNotIn('/blog/draft/', safe)
 
     def test_landing_escapes_editorial_content(self):
         article = post("teste")

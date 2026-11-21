@@ -469,6 +469,78 @@ def landing_card_html(post):
     )
 
 
+
+def landing_mobile_compact_html(post):
+    """Card horizontal para os destaques do carrossel na landing mobile."""
+    url = "/blog/" + post["slug"] + "/"
+    return (
+        '<article class="home-blog__mini-card">'
+        '<a class="home-blog__mini-media" href="' + e(url) +
+        '" aria-label="Ler: ' + e(post["title"]) + '">'
+        '<img src="' + e(post["cover"]) + '" alt="' + e(post["coverAlt"]) +
+        '" width="1200" height="900" loading="lazy"></a>'
+        '<div class="home-blog__mini-content">'
+        '<span class="home-blog__category">' + e(post["category"]) + '</span>'
+        '<h4><a href="' + e(url) + '">' + e(post["title"]) + '</a></h4>'
+        '<a class="home-blog__read" href="' + e(url) +
+        '">Ler artigo <span aria-hidden="true">→</span></a>'
+        '</div></article>'
+    )
+
+
+def landing_mobile_showcase(posts):
+    """Somente a versão mobile: último publicado + até 3 destaques do CMS."""
+    approved = [p for p in posts if p.get("published", False)]
+    latest, highlights, _ = select_spotlight(approved)
+    if latest is None:
+        return ""
+    main = landing_card_html(latest).replace(
+        'class="home-blog__card"',
+        'class="home-blog__card home-blog__mobile-primary"', 1
+    )
+    cards = "\n".join(landing_mobile_compact_html(p) for p in highlights)
+    slider = (
+        '<div class="home-blog__mini-carousel" data-home-blog-carousel '
+        'role="group" aria-label="Artigos selecionados em destaque">'
+        '<div class="home-blog__mini-track"' +
+        (' role="region" aria-roledescription="carrossel" tabindex="0" '
+         'aria-label="Deslize para ver os artigos em destaque"'
+         if len(highlights) > 1 else '') +
+        '>' + cards + '</div>'
+    )
+    if len(highlights) > 1:
+        dots = "".join(
+            '<button type="button" class="home-blog__mini-dot' +
+            (' is-active' if idx == 0 else '') +
+            '" data-home-blog-dot="' + str(idx) + '" aria-label="Ir para destaque ' +
+            str(idx + 1) + ' de ' + str(len(highlights)) + '"' +
+            (' aria-current="true"' if idx == 0 else '') + '></button>'
+            for idx in range(len(highlights))
+        )
+        slider += (
+            '<div class="home-blog__mini-controls" aria-label="Navegar pelos destaques">'
+            '<button type="button" class="home-blog__mini-arrow" data-home-blog-prev '
+            'aria-label="Destaque anterior" disabled>&#8249;</button>'
+            '<div class="home-blog__mini-dots">' + dots + '</div>'
+            '<button type="button" class="home-blog__mini-arrow" data-home-blog-next '
+            'aria-label="Próximo destaque">&#8250;</button>'
+            '</div>'
+        )
+    slider += '</div>'
+    if not highlights:
+        slider = '<p class="home-blog__mini-empty">Novos destaques em breve.</p>'
+    return (
+        '        <div class="home-blog__mobile-showcase">\n'
+        '          <div class="home-blog__mobile-title">Mais recente</div>\n' +
+        main + '\n'
+        '          <div class="home-blog__mobile-destaques">'
+        '<h3>Destaques</h3><a href="/blog/todos/" '
+        'class="home-blog__mobile-all">Ver todos <span aria-hidden="true">→</span></a>'
+        '</div>\n' + slider + '\n'
+        '        </div>'
+    )
+
+
 def update_landing_featured(published):
     """Mantém a seção da landing sempre sincronizada com artigos aprovados."""
     path = ROOT / "index.html"
@@ -476,6 +548,7 @@ def update_landing_featured(published):
     if source.count(LANDING_START) != 1 or source.count(LANDING_END) != 1:
         raise ValueError("Marcadores de destaque do blog ausentes ou duplicados na landing")
     chosen = ordered_featured(published)[:3]
+    mobile = landing_mobile_showcase(published)
     begin = source.index(LANDING_START)
     end = source.index(LANDING_END, begin) + len(LANDING_END)
     if chosen:
@@ -498,7 +571,8 @@ def update_landing_featured(published):
             '        </div>\n'
             '        <div class="home-blog__grid home-blog__grid--' + grid_class + '">\n' +
             cards + '\n'
-            '        </div>\n'
+            '        </div>\n' +
+            mobile + '\n' +
             '      </div>\n'
             '    </section>\n'
             + LANDING_END
