@@ -70,4 +70,7 @@ content:
         options:
           format: html
           switcher: true
-          media: false
+          # Permitir imagens dentro do texto, inclusive após H2 e H3.
+          path: assets/blog
+          rename: safe
+          extensions: [jpg, jpeg, png, webp]
