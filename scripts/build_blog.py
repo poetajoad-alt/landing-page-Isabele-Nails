@@ -27,10 +27,30 @@ COVER = re.compile(r"^/assets/(?!.*\.\.)[a-zA-Z0-9_./-]+\.(?:png|jpe?g|webp)$", 
 def e(value):
     return html.escape(str(value if value is not None else ""), quote=True)
 
+def safe_inline_image(url):
+    """Permite assets locais ou fotos específicas de bancos de imagens confiáveis."""
+    value = str(url or "").strip()
+    if len(value) > 700:
+        return None
+    if COVER.fullmatch(value):
+        return value
+    parsed = urlparse(value)
+    if parsed.scheme != "https" or parsed.username or parsed.password or parsed.port:
+        return None
+    if parsed.fragment:
+        return None
+    if parsed.netloc == "images.pexels.com":
+        if re.fullmatch(r"/photos/\d+/pexels-photo-\d+\.(?:jpe?g|webp|png)", parsed.path, re.I):
+            return value
+    if parsed.netloc == "images.unsplash.com":
+        if re.fullmatch(r"/photo-[a-zA-Z0-9-]+", parsed.path):
+            return value
+    return None
+
 class ArticleHTML(HTMLParser):
     """Mantém apenas marcação editorial conhecida do editor visual."""
     allowed = {"p", "h2", "h3", "strong", "b", "em", "i", "ul",
-               "ol", "li", "blockquote", "br"}
+               "ol", "li", "blockquote", "br", "figure", "figcaption"}
     blocked = {"script", "style", "iframe", "svg", "form", "object", "template"}
 
     def __init__(self):
@@ -43,6 +63,16 @@ class ArticleHTML(HTMLParser):
             self.skip += 1
             return
         if self.skip:
+            return
+        if tag == "img":
+            details = dict(attrs)
+            url = safe_inline_image(details.get("src"))
+            if url:
+                alt = details.get("alt") or ""
+                self.out.append(
+                    '<img src="' + e(url) + '" alt="' + e(alt) +
+                    '" loading="lazy" decoding="async">'
+                )
             return
         if tag == "a":
             href = dict(attrs).get("href", "").strip()
