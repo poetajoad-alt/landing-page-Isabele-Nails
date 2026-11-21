@@ -9,6 +9,7 @@ on:
       - 'content/blog/posts/**'
       - 'templates/blog-article.html.tpl'
       - 'templates/blog-index.html.tpl'
+      - 'templates/blog-all.html.tpl'
       - 'scripts/build_blog.py'
       - 'scripts/test_blog_captions.py'
       - 'scripts/test_blog_highlights.py'

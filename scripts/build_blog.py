@@ -21,6 +21,7 @@ POSTS = ROOT / "content" / "blog" / "posts"
 BLOG = ROOT / "blog"
 ARTICLE_TPL = (ROOT / "templates" / "blog-article.html.tpl").read_text(encoding="utf-8")
 INDEX_TPL = (ROOT / "templates" / "blog-index.html.tpl").read_text(encoding="utf-8")
+ALL_TPL = (ROOT / "templates" / "blog-all.html.tpl").read_text(encoding="utf-8")
 SITE = "https://isabelemariananails.com.br"
 NS = "http://www.sitemaps.org/schemas/sitemap/0.9"
 SLUG = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
@@ -165,6 +166,8 @@ def read_posts():
         if any(not str(data.get(field) or "").strip() for field in required):
             raise ValueError("Campos incompletos no artigo: " + path.name)
         slug = data["slug"]
+        if slug == "todos":
+            raise ValueError("Slug reservado para a listagem de artigos: " + path.name)
         if not SLUG.fullmatch(slug) or slug != path.stem:
             raise ValueError("Slug diferente do nome do arquivo: " + path.name)
         if not COVER.fullmatch(data["cover"]):
@@ -388,18 +391,41 @@ def spotlight_section(latest, highlights):
             '>' + highlight_cards + '</div>' + controls + '</div>'
         )
     layout = "" if highlights else " blog-feature-grid--single"
+    if not sidebar:
+        sidebar = '<p class="blog-highlights-empty">Novos destaques em breve.</p>'
     return (
         '<section class="blog-spotlight" aria-labelledby="spotlight-title">'
-        '<div class="wrap"><div class="blog-section-intro">'
-        '<div><span class="eyebrow">Seleção da Isabele</span>'
-        '<h2 class="section-title" id="spotlight-title">Em destaque</h2></div>'
-        '<p class="blog-section-intro__description">'
-        'Dicas para descobrir novos cuidados e escolher o próximo visual.'
-        '</p></div>'
-        '<div class="blog-feature-grid' + layout + '">' +
-        main_card + sidebar + '</div>'
+        '<div class="wrap"><div class="blog-feature-grid' + layout + '">'
+        '<div class="blog-recent-heading"><span class="eyebrow">Seleção da Isabele</span>'
+        '<h2 class="section-title" id="spotlight-title">Mais recente</h2></div>'
+        '<div class="blog-highlights-heading">'
+        '<h2 id="highlights-title">Destaques</h2>'
+        '<a class="blog-view-all" href="/blog/todos/">Ver todos '
+        '<span aria-hidden="true">→</span></a></div>'
+        + main_card + sidebar + '</div>'
         '</div></section>'
     )
+
+
+
+def all_articles_section(posts):
+    """Lista integral, cronológica, dos artigos visíveis no CMS."""
+    if not posts:
+        return '<p class="blog-empty">Ainda não há artigos publicados.</p>'
+    return "\\n".join(compact_spotlight_card_html(p) for p in newest_first(posts))
+
+
+def all_articles_count(posts):
+    amount = len(posts)
+    return str(amount) + (" artigo" if amount == 1 else " artigos")
+
+
+def all_articles_page(posts, robots):
+    return render(ALL_TPL, {
+        "ROBOTS": robots,
+        "ARTICLE_COUNT": all_articles_count(posts),
+        "ALL_ARTICLES": all_articles_section(posts)
+    })
 
 
 def more_section(posts):
@@ -496,7 +522,7 @@ def update_sitemap(published):
         if loc is not None and (loc.text or "").startswith(SITE + "/blog/"):
             root.remove(node)
     if published:
-        paths = ["/blog/"] + ["/blog/" + p["slug"] + "/" for p in published]
+        paths = ["/blog/", "/blog/todos/"] + ["/blog/" + p["slug"] + "/" for p in published]
         for path in paths:
             item = ET.SubElement(root, ns + "url")
             ET.SubElement(item, ns + "loc").text = SITE + path
@@ -513,7 +539,7 @@ def main():
     visible = all_posts if args.preview else published
     slugs = {p["slug"] for p in visible}
     for path in BLOG.glob("*/index.html"):
-        if path.parent.name not in slugs:
+        if path.parent.name not in slugs and path.parent.name != "todos":
             path.unlink()
     for post in visible:
         write_changed(BLOG / post["slug"] / "index.html", article_html(post, args.preview))
@@ -524,6 +550,7 @@ def main():
         "SPOTLIGHT_SECTION": spotlight_section(latest, highlights),
         "MORE_SECTION": more_section(other)
     }))
+    write_changed(BLOG / "todos" / "index.html", all_articles_page(visible, listing_robots))
     if not args.preview:
         update_landing_featured(published)
         update_sitemap(published)

@@ -45,6 +45,12 @@ class BlogHighlightsTests(unittest.TestCase):
         )
         html = build_blog.spotlight_section(latest, sidebar)
         self.assertIn('id="spotlight-title"', html)
+        self.assertIn('>Mais recente</h2>', html)
+        self.assertIn('>Destaques</h2>', html)
+        self.assertIn('href="/blog/todos/"', html)
+        self.assertNotIn("Dicas para descobrir novos cuidados", html)
+        self.assertIn('class="blog-recent-heading"', html)
+        self.assertIn('class="blog-highlights-heading"', html)
         self.assertIn('href="/blog/novo/"', html)
         self.assertIn('aria-label="Artigos selecionados em destaque"', html)
         self.assertIn('style="--stack-count:3"', html)
@@ -94,8 +100,10 @@ class BlogHighlightsTests(unittest.TestCase):
         self.assertNotIn('data-carousel-dot', html)
         self.assertEqual(html.count('class="blog-feature-card blog-feature-card--compact"'), 1)
         self.assertNotIn("blog-feature-grid--single", html)
-        self.assertIn("blog-feature-grid--single",
-                      build_blog.spotlight_section(post("principal"), []))
+        single = build_blog.spotlight_section(post("principal"), [])
+        self.assertIn("blog-feature-grid--single", single)
+        self.assertIn('href="/blog/todos/"', single)
+        self.assertIn('blog-highlights-empty', single)
 
     def test_later_edits_do_not_change_publish_timestamp(self):
         # Lista de commits: edição recente, publicação original, rascunho antigo.
@@ -121,6 +129,40 @@ class BlogHighlightsTests(unittest.TestCase):
         self.assertIn('href="/blog/c/"', html)
         self.assertNotIn('/blog/a/', html)
         self.assertEqual(build_blog.more_section([]), "")
+
+
+    def test_all_articles_have_newest_first_order_and_include_highlights(self):
+        posts = [post("velho", True), post("novo", True),
+                 post("medio"), post("segundo", True)]
+        times = {"velho": 10, "medio": 30, "segundo": 20, "novo": 40}
+        with patch.object(build_blog, "published_timestamp",
+                          side_effect=lambda slug: times[slug]):
+            html = build_blog.all_articles_section(posts)
+        self.assertEqual(html.count('class="blog-feature-card blog-feature-card--compact"'), 4)
+        self.assertLess(html.index('/blog/novo/'), html.index('/blog/medio/'))
+        self.assertLess(html.index('/blog/medio/'), html.index('/blog/segundo/'))
+        self.assertLess(html.index('/blog/segundo/'), html.index('/blog/velho/'))
+
+    def test_all_articles_page_has_own_canonical_meta_and_visible_list(self):
+        published_posts = [post("a"), post("b", True)]
+        with patch.object(build_blog, "published_timestamp", return_value=100):
+            html = build_blog.all_articles_page(published_posts, "index,follow")
+        self.assertIn('<title>Todos os artigos | Blog Isabele Mariana Nails</title>', html)
+        self.assertIn('href="https://isabelemariananails.com.br/blog/todos/"', html)
+        self.assertIn('<meta name="robots" content="index,follow">', html)
+        self.assertIn('2 artigos', html)
+        self.assertIn('href="/blog/a/"', html)
+        self.assertIn('href="/blog/b/"', html)
+        self.assertIn('href="/blog/"', html)
+        self.assertIn('class="blog-all__list"', html)
+        self.assertNotIn("{{ALL_ARTICLES}}", html)
+        preview = build_blog.all_articles_page(published_posts, "noindex,follow")
+        self.assertIn('<meta name="robots" content="noindex,follow">', preview)
+
+    def test_archive_empty_state_and_one_article(self):
+        self.assertIn('Ainda não há artigos', build_blog.all_articles_section([]))
+        self.assertEqual(build_blog.all_articles_count([]), "0 artigos")
+        self.assertEqual(build_blog.all_articles_count([post("um")]), "1 artigo")
 
     def test_landing_renders_only_given_published_posts(self):
         with tempfile.TemporaryDirectory() as name:
