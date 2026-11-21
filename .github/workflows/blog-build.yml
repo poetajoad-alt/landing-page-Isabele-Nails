@@ -48,7 +48,7 @@ jobs:
       - name: Gerar artigos e listagem
         shell: bash
         run: |
-          if [ "$GITHUB_REF_NAME" = "main" ]; then
+          if [ "$GITHUB_REF_NAME" = "main" ] || [ "$GITHUB_REF_NAME" = "feat/blog-destaques-horizontal-20261121" ]; then
             python scripts/build_blog.py
           else
             python scripts/build_blog.py --preview
