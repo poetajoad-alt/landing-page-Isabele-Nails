@@ -59,6 +59,10 @@ content:
       - name: coverCaption
         label: Legenda da imagem
         type: text
+      - name: featured
+        label: Destacar artigo no blog
+        type: boolean
+        description: Prioriza este artigo nos destaques do blog e da landing. Apenas artigos publicados aparecem no site.
       - name: published
         label: Aprovado para publicação
         type: boolean
