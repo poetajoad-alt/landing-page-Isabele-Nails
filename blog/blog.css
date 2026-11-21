@@ -11,3 +11,27 @@
 
 /* Espaçamento automático quando houver vários artigos na listagem. */
 .feature + .feature{margin-top:26px}
+
+/* Imagens inseridas no meio do artigo pelo Pages CMS.
+   Mantém a proporção original, tanto no desktop quanto no celular. */
+.prose figure{margin:30px 0 38px}
+.prose figure img,.prose p > img,.prose > img{
+  display:block;
+  width:100%;
+  max-width:100%;
+  height:auto;
+  max-height:none;
+  object-fit:contain;
+  border-radius:21px;
+  background:#f6e9ef
+}
+.prose figcaption{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.5;
+  margin-top:10px
+}
+@media(max-width:760px){
+  .prose figure{margin:22px 0 28px}
+  .prose figure img,.prose p > img,.prose > img{max-height:none;object-fit:contain}
+}
