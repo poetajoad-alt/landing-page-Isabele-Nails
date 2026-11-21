@@ -356,11 +356,37 @@ def spotlight_section(latest, highlights):
         )
     main_card = spotlight_card_html(latest, primary=True)
     highlight_cards = "\n".join(compact_spotlight_card_html(p) for p in highlights)
-    sidebar = (
-        '<div class="blog-feature-stack" style="--stack-count:' +
-        str(len(highlights)) + '" aria-label="Artigos selecionados em destaque">' +
-        highlight_cards + '</div>'
-    ) if highlights else ""
+    sidebar = ""
+    if highlights:
+        dots = "".join(
+            '<button type="button" class="blog-feature-carousel__dot' +
+            (' is-active' if idx == 0 else '') +
+            '" data-carousel-dot="' + str(idx) +
+            '" aria-label="Ir para destaque ' + str(idx + 1) +
+            ' de ' + str(len(highlights)) + '"' +
+            (' aria-current="true"' if idx == 0 else '') +
+            '></button>'
+            for idx in range(len(highlights))
+        )
+        controls = (
+            '<div class="blog-feature-carousel__controls" aria-label="Navegar pelos destaques">'
+            '<button type="button" class="blog-feature-carousel__arrow" data-carousel-prev '
+            'aria-label="Destaque anterior" disabled>&#8249;</button>'
+            '<div class="blog-feature-carousel__dots">' + dots + '</div>'
+            '<button type="button" class="blog-feature-carousel__arrow" data-carousel-next '
+            'aria-label="Próximo destaque">&#8250;</button>'
+            '</div>'
+        ) if len(highlights) > 1 else ""
+        sidebar = (
+            '<div class="blog-feature-carousel" data-blog-carousel role="group" '
+            'aria-label="Artigos selecionados em destaque">'
+            '<div class="blog-feature-stack" style="--stack-count:' +
+            str(len(highlights)) + '"' +
+            (' role="region" aria-roledescription="carrossel" tabindex="0" '
+             'aria-label="Deslize para ver os artigos em destaque"'
+             if len(highlights) > 1 else '') +
+            '>' + highlight_cards + '</div>' + controls + '</div>'
+        )
     layout = "" if highlights else " blog-feature-grid--single"
     return (
         '<section class="blog-spotlight" aria-labelledby="spotlight-title">'

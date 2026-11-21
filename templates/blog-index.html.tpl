@@ -42,5 +42,6 @@
     {{MORE_SECTION}}
   </main>
   <footer class="footer"><div class="wrap"><span>© Isabele Mariana Nails · Guarulhos, SP</span><a href="/">Voltar ao site</a></div></footer>
+  <script src="/blog/blog-feature-carousel.js" defer></script>
 </body>
 </html>
