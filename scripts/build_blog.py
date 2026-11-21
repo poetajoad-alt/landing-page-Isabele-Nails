@@ -412,7 +412,7 @@ def all_articles_section(posts):
     """Lista integral, cronológica, dos artigos visíveis no CMS."""
     if not posts:
         return '<p class="blog-empty">Ainda não há artigos publicados.</p>'
-    return "\\n".join(compact_spotlight_card_html(p) for p in newest_first(posts))
+    return "\n".join(compact_spotlight_card_html(p) for p in newest_first(posts))
 
 
 def all_articles_count(posts):
