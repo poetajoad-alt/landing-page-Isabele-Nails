@@ -27,9 +27,9 @@
 }
 .prose figcaption{
   color:var(--muted);
-  font-size:13px;
+  font-size:14px;
   line-height:1.5;
-  margin-top:10px
+  margin-top:8px
 }
 @media(max-width:760px){
   .prose figure{margin:22px 0 28px}
