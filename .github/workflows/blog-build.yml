@@ -10,6 +10,7 @@ on:
       - 'templates/blog-article.html.tpl'
       - 'templates/blog-index.html.tpl'
       - 'scripts/build_blog.py'
+      - 'scripts/test_blog_captions.py'
       - '.github/workflows/blog-build.yml'
   workflow_dispatch:
 
@@ -37,6 +38,9 @@ jobs:
 
       - name: Validar sintaxe do gerador
         run: python -m py_compile scripts/build_blog.py
+
+      - name: Testar legendas e seguranca do HTML
+        run: python -m unittest discover -s scripts -p 'test_blog_captions.py' -v
 
       - name: Gerar artigos e listagem
         shell: bash
