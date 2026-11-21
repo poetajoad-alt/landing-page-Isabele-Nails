@@ -37,14 +37,76 @@ class BlogHighlightsTests(unittest.TestCase):
             ["a", "b"],
         )
 
-    def test_spotlight_uses_4_to_3_source_dimensions(self):
-        html = build_blog.spotlight_section([post("a"), post("b")])
+    def test_latest_article_is_main_and_three_others_are_horizontal(self):
+        latest, sidebar, remaining = (
+            post("novo", featured=True),
+            [post("a", featured=True), post("b", featured=True), post("c", featured=True)],
+            [post("extra")],
+        )
+        html = build_blog.spotlight_section(latest, sidebar)
         self.assertIn('id="spotlight-title"', html)
-        self.assertEqual(html.count('width="1200" height="900"'), 2)
-        self.assertEqual(html.count('class="blog-feature-card"'), 1)
-        self.assertEqual(html.count('class="blog-feature-card blog-feature-card--secondary"'), 1)
+        self.assertIn('href="/blog/novo/"', html)
+        self.assertIn('aria-label="Artigos selecionados em destaque"', html)
+        self.assertIn('style="--stack-count:3"', html)
+        self.assertEqual(html.count('class="blog-feature-card blog-feature-card--compact"'), 3)
+        self.assertEqual(html.count('width="1200" height="900"'), 4)
         self.assertIn('loading="eager"', html)
         self.assertIn('loading="lazy"', html)
+        self.assertNotIn('href="/blog/extra/"', html)
+
+    def test_select_spotlight_prioritizes_latest_without_duplication(self):
+        posts = [post("velho", True), post("novo", True),
+                 post("intermediario", True), post("outro", True),
+                 post("extra", True)]
+        ranks = {"velho": 100, "intermediario": 120, "outro": 130,
+                 "extra": 140, "novo": 200}
+        with patch.object(build_blog, "published_timestamp",
+                          side_effect=lambda slug: ranks[slug]):
+            latest, highlights, remaining = build_blog.select_spotlight(posts)
+        self.assertEqual(latest["slug"], "novo")
+        self.assertEqual([p["slug"] for p in highlights],
+                         ["extra", "outro", "intermediario"])
+        self.assertEqual([p["slug"] for p in remaining], ["velho"])
+        self.assertNotIn(latest, highlights)
+
+    def test_only_cms_featured_posts_appear_on_right(self):
+        posts = [post("a", True), post("b"), post("c", True), post("d")]
+        ranks = {"a": 50, "b": 40, "c": 30, "d": 20}
+        with patch.object(build_blog, "published_timestamp",
+                          side_effect=lambda slug: ranks[slug]):
+            latest, highlights, remaining = build_blog.select_spotlight(posts)
+        self.assertEqual(latest["slug"], "a")
+        self.assertEqual([p["slug"] for p in highlights], ["c"])
+        self.assertEqual([p["slug"] for p in remaining], ["b", "d"])
+
+    def test_empty_spotlight_and_one_featured(self):
+        self.assertIn("Estamos preparando",
+                      build_blog.spotlight_section(None, []))
+        html = build_blog.spotlight_section(post("principal"), [post("outro")])
+        self.assertIn('style="--stack-count:1"', html)
+        self.assertEqual(html.count('class="blog-feature-card blog-feature-card--compact"'), 1)
+        self.assertNotIn("blog-feature-grid--single", html)
+        self.assertIn("blog-feature-grid--single",
+                      build_blog.spotlight_section(post("principal"), []))
+
+    def test_later_edits_do_not_change_publish_timestamp(self):
+        # Lista de commits: edição recente, publicação original, rascunho antigo.
+        class Result:
+            def __init__(self, stdout):
+                self.stdout = stdout
+        entries = {
+            "edit": '{"published": true}',
+            "publish": '{"published": true}',
+            "draft": '{"published": false}',
+        }
+        def fake_run(args, **kwargs):
+            if args[1] == "log":
+                return Result("edit 300\npublish 200\ndraft 100\n")
+            return Result(entries[args[2].split(":")[0]])
+        build_blog.published_timestamp.cache_clear()
+        with patch.object(build_blog.subprocess, "run", side_effect=fake_run):
+            self.assertEqual(build_blog.published_timestamp("artigo"), 200)
+        build_blog.published_timestamp.cache_clear()
 
     def test_remaining_articles_render_separately(self):
         html = build_blog.more_section([post("c")])
