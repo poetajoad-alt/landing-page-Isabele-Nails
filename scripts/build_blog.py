@@ -101,10 +101,43 @@ class ArticleHTML(HTMLParser):
         if not self.skip:
             self.out.append(e(data))
 
+# O Pages CMS salva imagens e textos de crédito como elementos separados.
+# Converte em legenda sem exigir HTML manual nem alterar o JSON editorial.
+INLINE_IMAGE_CAPTION = re.compile(
+    r"(?P<image><p>\s*<img\b[^>]*>\s*</p>|<img\b[^>]*>)"
+    r"\s*<p>(?P<caption>.*?)</p>", re.I | re.S
+)
+PHOTO_CREDIT = re.compile(
+    r"\b(?:legenda|foto(?:grafia)?(?:\s+ilustrativa)?|imagem(?:\s+ilustrativa)?"
+    r"|cr[eé]dito(?:s)?|fonte)\s*:", re.I
+)
+
+
+def format_inline_captions(body):
+    """Transforma imagem + parágrafo de legenda em figure/figcaption sem falsos positivos."""
+    def convert(match):
+        original = match.group(0)
+        caption = match.group("caption")
+        plain = html.unescape(re.sub(r"<[^>]+>", "", caption)).strip()
+        # Sem crédito ou identificação explícita, pode ser o texto normal do artigo.
+        if not plain or len(plain) > 280 or not PHOTO_CREDIT.search(plain):
+            return original
+        # Nunca criar uma figure dentro de outra (figuras já prontas seguem intactas).
+        previous = body[:match.start()]
+        if previous.rfind("<figure>") > previous.rfind("</figure>"):
+            return original
+        image_match = re.search(r"<img\b[^>]*>", match.group("image"), re.I)
+        if not image_match:
+            return original
+        return "<figure>" + image_match.group(0) + "<figcaption>" + caption + "</figcaption></figure>"
+
+    return INLINE_IMAGE_CAPTION.sub(convert, body)
+
+
 def clean_body(source):
     parser = ArticleHTML()
     parser.feed(str(source or ""))
-    return "".join(parser.out)
+    return format_inline_captions("".join(parser.out))
 
 def render(template, tokens):
     def replacement(match):
