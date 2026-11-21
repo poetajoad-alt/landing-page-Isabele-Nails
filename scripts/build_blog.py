@@ -222,20 +222,159 @@ def article_html(post, preview):
         "ARTICLE_CONTENT": article
     })
 
-def card_html(post):
+def ordered_featured(posts):
+    """Respeita seleção editorial no CMS; completa automaticamente se necessário."""
+    return sorted(posts, key=lambda post: not post.get("featured", False))
+
+
+def spotlight_card_html(post, primary=False):
+    url = "/blog/" + post["slug"] + "/"
+    media = (
+        '<a class="blog-feature-card__media" href="' + e(url) +
+        '" aria-label="Ler: ' + e(post["title"]) + '">'
+        '<img src="' + e(post["cover"]) + '" alt="' + e(post["coverAlt"]) +
+        '" width="1200" height="900" loading="' +
+        ("eager" if primary else "lazy") + '"></a>'
+    )
+    return (
+        '<article class="blog-feature-card' +
+        ('' if primary else ' blog-feature-card--secondary') + '">' +
+        media + '<div class="blog-feature-card__body">'
+        '<span class="eyebrow">' + e(post["category"]) + '</span>'
+        '<h3><a href="' + e(url) + '">' + e(post["title"]) + '</a></h3>'
+        '<p>' + e(post["summary"]) + '</p>'
+        '<a class="blog-feature-card__link" href="' + e(url) +
+        '">Ler artigo <span aria-hidden="true">→</span></a>'
+        '</div></article>'
+    )
+
+
+def more_card_html(post):
     url = "/blog/" + post["slug"] + "/"
     return (
-        '<article class="feature">\n'
-        '  <a href="' + e(url) + '" aria-label="Ler: ' + e(post["title"]) + '">\n'
-        '    <img src="' + e(post["cover"]) + '" alt="' + e(post["coverAlt"]) +
-        '" width="1200" height="900" loading="lazy"></a>\n'
-        '  <div class="feature-body"><span class="eyebrow">' + e(post["category"]) + '</span>\n'
-        '    <h2><a href="' + e(url) + '">' + e(post["title"]) + '</a></h2>\n'
-        '    <p>' + e(post["summary"]) + '</p>\n'
-        '    <a class="pill" href="' + e(url) + '">Ler artigo completo</a>\n'
-        '  </div>\n'
-        '</article>'
+        '<article class="blog-grid-card">'
+        '<a class="blog-grid-card__media" href="' + e(url) +
+        '" aria-label="Ler: ' + e(post["title"]) + '">'
+        '<img src="' + e(post["cover"]) + '" alt="' + e(post["coverAlt"]) +
+        '" width="1200" height="900" loading="lazy"></a>'
+        '<div class="blog-grid-card__body">'
+        '<span class="eyebrow">' + e(post["category"]) + '</span>'
+        '<h3><a href="' + e(url) + '">' + e(post["title"]) + '</a></h3>'
+        '<p>' + e(post["summary"]) + '</p>'
+        '<a class="blog-feature-card__link" href="' + e(url) +
+        '">Ler artigo <span aria-hidden="true">→</span></a>'
+        '</div></article>'
     )
+
+
+def spotlight_section(posts):
+    if not posts:
+        return (
+            '<section class="blog-spotlight"><div class="wrap">'
+            '<h2 class="section-title">Conteúdos para você</h2>'
+            '<p class="blog-empty">Estamos preparando novos artigos. Volte em breve!</p>'
+            '</div></section>'
+        )
+    cards = "\n".join(
+        spotlight_card_html(post, primary=index == 0)
+        for index, post in enumerate(posts)
+    )
+    layout = " blog-feature-grid--single" if len(posts) == 1 else ""
+    return (
+        '<section class="blog-spotlight" aria-labelledby="spotlight-title">'
+        '<div class="wrap"><div class="blog-section-intro">'
+        '<div><span class="eyebrow">Seleção da Isabele</span>'
+        '<h2 class="section-title" id="spotlight-title">Em destaque</h2></div>'
+        '<p class="blog-section-intro__description">'
+        'Dicas para descobrir novos cuidados e escolher o próximo visual.'
+        '</p></div>'
+        '<div class="blog-feature-grid' + layout + '">' + cards + '</div>'
+        '</div></section>'
+    )
+
+
+def more_section(posts):
+    if not posts:
+        return ""
+    cards = "\n".join(more_card_html(post) for post in posts)
+    return (
+        '<section class="blog-more" aria-labelledby="more-posts-title">'
+        '<div class="wrap"><div class="blog-section-intro">'
+        '<div><span class="eyebrow">Continue explorando</span>'
+        '<h2 class="section-title" id="more-posts-title">Mais artigos para você</h2>'
+        '</div></div><div class="blog-more__grid">' + cards + '</div>'
+        '</div></section>'
+    )
+
+
+LANDING_START = "    <!-- BLOG_FEATURED_START -->"
+LANDING_END = "    <!-- BLOG_FEATURED_END -->"
+
+
+def landing_card_html(post):
+    url = "/blog/" + post["slug"] + "/"
+    return (
+        '        <article class="home-blog__card">\n'
+        '          <a class="home-blog__image" href="' + e(url) +
+        '" aria-label="Ler: ' + e(post["title"]) + '">\n'
+        '            <img src="' + e(post["cover"]) + '" alt="' +
+        e(post["coverAlt"]) + '" width="1200" height="900" loading="lazy">\n'
+        '          </a>\n'
+        '          <div class="home-blog__card-body">\n'
+        '            <span class="home-blog__category">' + e(post["category"]) +
+        '</span>\n'
+        '            <h3><a href="' + e(url) + '">' + e(post["title"]) +
+        '</a></h3>\n'
+        '            <p>' + e(post["summary"]) + '</p>\n'
+        '            <a class="home-blog__read" href="' + e(url) +
+        '">Ler artigo <span aria-hidden="true">→</span></a>\n'
+        '          </div>\n'
+        '        </article>'
+    )
+
+
+def update_landing_featured(published):
+    """Mantém a seção da landing sempre sincronizada com artigos aprovados."""
+    path = ROOT / "index.html"
+    source = path.read_text(encoding="utf-8")
+    if source.count(LANDING_START) != 1 or source.count(LANDING_END) != 1:
+        raise ValueError("Marcadores de destaque do blog ausentes ou duplicados na landing")
+    chosen = ordered_featured(published)[:3]
+    begin = source.index(LANDING_START)
+    end = source.index(LANDING_END, begin) + len(LANDING_END)
+    if chosen:
+        grid_class = {1: "one", 2: "two", 3: "three"}[len(chosen)]
+        cards = "\n".join(landing_card_html(post) for post in chosen)
+        block = (
+            LANDING_START + '\n'
+            '    <section class="home-blog" id="artigos" aria-labelledby="home-blog-title">\n'
+            '      <div class="container">\n'
+            '        <div class="home-blog__heading">\n'
+            '          <div class="home-blog__intro">\n'
+            '            <span class="section-eyebrow">Conteúdos para você</span>\n'
+            '            <h2 class="home-blog__title" id="home-blog-title">'
+            'Inspiração e cuidados para suas unhas.</h2>\n'
+            '            <p>Ideias, técnicas e orientações para acompanhar '
+            'seu momento de autocuidado.</p>\n'
+            '          </div>\n'
+            '          <a class="home-blog__all" href="/blog/">'
+            'Explorar o blog <span aria-hidden="true">→</span></a>\n'
+            '        </div>\n'
+            '        <div class="home-blog__grid home-blog__grid--' + grid_class + '">\n' +
+            cards + '\n'
+            '        </div>\n'
+            '      </div>\n'
+            '    </section>\n'
+            + LANDING_END
+        )
+    else:
+        block = (
+            LANDING_START + '\n'
+            '    <!-- Nenhum artigo aprovado para exibir no momento. -->\n'
+            + LANDING_END
+        )
+    write_changed(path, source[:begin] + block + source[end:])
+
 
 def update_sitemap(published):
     sitemap = ROOT / "sitemap.xml"
@@ -269,15 +408,17 @@ def main():
             path.unlink()
     for post in visible:
         write_changed(BLOG / post["slug"] / "index.html", article_html(post, args.preview))
-    cards = "\n".join(card_html(post) for post in visible) or (
-        '<p>Estamos preparando novos conteúdos. Volte em breve!</p>'
-    )
+    ordered = ordered_featured(visible)
+    selected = ordered[:2]
+    other = ordered[2:]
     listing_robots = "noindex,follow" if args.preview or not published else "index,follow"
     write_changed(BLOG / "index.html", render(INDEX_TPL, {
         "ROBOTS": listing_robots,
-        "POST_CARDS": cards
+        "SPOTLIGHT_SECTION": spotlight_section(selected),
+        "MORE_SECTION": more_section(other)
     }))
     if not args.preview:
+        update_landing_featured(published)
         update_sitemap(published)
     print("Blog Isabele: %d página(s), %d publicado(s), modo prévia=%s" %
           (len(visible), len(published), args.preview))
