@@ -116,3 +116,30 @@ body.portfolio-modal-open{overflow:hidden}
 .about-editorial-card.has-photo{padding:0;background:#f0dce3}
 .about-editorial-card.has-photo .about-editorial-placeholder{display:none}
 .about-editorial-copy strong{font-weight:700;color:var(--text)}
+
+/* Seção Sobre: frame retangular editorial e proporção fiel ao retrato.
+   Evita o arco antigo e a altura mobile curta que cortava o rosto. */
+.about-editorial-card{
+  width:100%;
+  min-height:0;
+  aspect-ratio:4 / 5;
+  border-radius:28px;
+  border:1px solid var(--border-strong);
+  box-shadow:var(--shadow-md);
+}
+.about-editorial-card.has-photo{
+  min-height:0;
+  border-radius:28px;
+}
+.about-editorial-photo{
+  object-fit:cover;
+  object-position:center center;
+}
+@media(max-width:700px){
+  .about-editorial-card,
+  .about-editorial-card.has-photo{
+    min-height:0;
+    aspect-ratio:4 / 5;
+    border-radius:24px;
+  }
+}
