@@ -1,19 +1,24 @@
 {
   "files": [
     {
-      "name": "alongamento-azul-marinho.jpg"
+      "name": "alongamento-azul-marinho.jpg",
+      "version": "a4740e6ca2a4"
     },
     {
-      "name": "alongamento-francesinha-rosa-e-azul.JPG"
+      "name": "alongamento-francesinha-rosa-e-azul.JPG",
+      "version": "dcbf8d212356"
     },
     {
-      "name": "esmaltacao-gel.webp"
+      "name": "esmaltacao-gel.webp",
+      "version": "65772c010924"
     },
     {
-      "name": "unha-marrom.jpg"
+      "name": "unha-marrom.jpg",
+      "version": "f0ca76c94d63"
     },
     {
-      "name": "vinho-brilhante.webp"
+      "name": "vinho-brilhante.webp",
+      "version": "1f160c3a7fcd"
     }
   ]
 }
