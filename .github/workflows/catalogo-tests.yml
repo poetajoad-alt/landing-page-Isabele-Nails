@@ -1,0 +1,33 @@
+name: Catálogo de serviços - validação
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'catalogo/**'
+      - 'scripts/test_catalogo.mjs'
+      - '.github/workflows/catalogo-tests.yml'
+  pull_request:
+    paths:
+      - 'catalogo/**'
+      - 'scripts/test_catalogo.mjs'
+      - '.github/workflows/catalogo-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Conferir sintaxe JavaScript
+        run: |
+          node --check catalogo/catalogo.js
+          node --check catalogo/catalogo-data.mjs
+      - name: Testar filtros, preços, status e links
+        run: node --test scripts/test_catalogo.mjs

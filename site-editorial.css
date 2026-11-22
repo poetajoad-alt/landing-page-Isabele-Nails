@@ -176,3 +176,12 @@ body.portfolio-modal-open{overflow:hidden}
   .about-editorial-heading h2{font-size:clamp(2.5rem,11.5vw,3.7rem)}
   .about-editorial-grid{row-gap:24px}
 }
+
+/* Acesso editorial ao catálogo completo de serviços, sem alterar cards existentes. */
+.services-catalog-callout{display:flex;align-items:center;justify-content:space-between;gap:28px;margin:38px 0 8px;padding:34px 38px;background:linear-gradient(110deg,#fae4eb,#fff3f7);border:1px solid var(--border-strong);border-radius:24px}
+.services-catalog-callout>div{max-width:610px}
+.services-catalog-eyebrow{display:block;color:var(--pink-dark);font-size:.74rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;margin-bottom:8px}
+.services-catalog-callout h3{font:600 clamp(1.6rem,2.9vw,2.2rem)/1.16 "Playfair Display",serif;color:var(--text);margin-bottom:9px}
+.services-catalog-callout p{color:var(--text-soft);line-height:1.65}
+.services-catalog-cta{white-space:nowrap;flex-shrink:0}
+@media(max-width:760px){.services-catalog-callout{padding:28px 23px;align-items:stretch;flex-direction:column;gap:22px}.services-catalog-cta{width:100%}}
