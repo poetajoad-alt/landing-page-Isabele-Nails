@@ -72,5 +72,5 @@ export function duracaoLabel(value) {
   return Number.isFinite(number) && number > 0 ? Math.round(number) + " min" : "Duração a confirmar";
 }
 export function urlAgendamento(id) {
-  return "https://isabelenailsapp.vercel.app/agendamento.html?id=" + encodeURIComponent(String(id));
+  return "https://isabelenailsapp.vercel.app/login.html?servico=" + encodeURIComponent(String(id));
 }

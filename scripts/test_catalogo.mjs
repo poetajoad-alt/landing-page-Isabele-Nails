@@ -36,6 +36,6 @@ test("preços e durações reais, com ausentes sem inventar",()=>{
   assert.equal(duracaoLabel(90),"90 min");
   assert.equal(duracaoLabel(null),"Duração a confirmar");
 });
-test("deep link aponta ao serviço específico no aplicativo",()=>{
-  assert.equal(urlAgendamento("A 12"),"https://isabelenailsapp.vercel.app/agendamento.html?id=A%2012");
+test("botão encaminha ao login com o serviço preservado",()=>{
+  assert.equal(urlAgendamento("A 12"),"https://isabelenailsapp.vercel.app/login.html?servico=A%2012");
 });
