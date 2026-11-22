@@ -1,0 +1,23 @@
+[33m7294239[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m docs(blog): explicar escolha de imagens e seu posicionamento no CMS
+[33mf9ea9bb[m blog: gerar paginas a partir do Pages CMS
+[33m8f2676e[m content(blog): inserir duas fotografias de banco entre as seções do primeiro artigo
+[33md7d33c7[m style(blog): exibir imagens internas sem corte em desktop e mobile
+[33mddcebe8[m feat(blog): renderizar imagens e legendas do editor visual com fontes seguras
+[33m29693ba[m feat(cms): habilitar imagens dentro do editor de artigos
+[33m40d93fa[m blog: gerar paginas a partir do Pages CMS
+[33ma720c2a[m Update content/blog/posts/como-cuidar-das-unhas-entre-atendimentos.json (via Pages CMS)
+[33m7431e1a[m docs(blog): instruções de edição, imagens e publicação pelo Pages CMS
+[33m70bd6de[m blog: gerar paginas a partir do Pages CMS
+[33m643f803[m ci(blog): gerar artigos automaticamente após edição no Pages CMS
+[33m826757a[m style(blog): espaçar cards para múltiplos artigos sem alterar mobile
+[33md695195[m feat(cms): gerar HTML, dados SEO e sitemap a partir do editor visual
+[33m86d3c3e[m feat(blog): template do índice de artigos para CMS
+[33mc21759a[m feat(blog): template editorial reutilizável para páginas do CMS
+[33m01012b7[m feat(cms): importar primeiro artigo como conteúdo editável no Pages CMS
+[33m434f93d[m feat(cms): configurar Pages CMS com campos SEO, imagem e texto visual
+[33ma686542[m fix(blog): corrigir corte no desktop mantendo imagens do mobile intactas
+[33m2af543f[m fix(blog): exibir imagens completas sem cortes na capa e no artigo
+[33m54bdae0[m feat(blog): incluir acesso ao blog no menu e rodapé da landing
+[33m7e0d125[m feat(blog): preparar artigo piloto de cuidados com unhas, imagens e SEO
+[33m0df625d[m feat(blog): criar página de listagem editorial piloto
+[33mf041303[m feat(blog): estilos responsivos do piloto editorial da Isabele
