@@ -3,7 +3,7 @@
 (function () {
   "use strict";
   const gallery = document.getElementById("portfolio-gallery");
-  const cards = gallery ? Array.from(gallery.querySelectorAll(".portfolio-item")) : [];
+  let cards = gallery ? Array.from(gallery.querySelectorAll(".portfolio-item")) : [];
   const current = document.getElementById("portfolio-current");
   const total = document.getElementById("portfolio-total");
   if (total) total.textContent = String(cards.length).padStart(2, "0");
@@ -53,18 +53,17 @@
     if (modalImage) modalImage.removeAttribute("src");
     if (lastFocus) lastFocus.focus();
   }
-  cards.forEach(function (card) {
-    card.addEventListener("click", function () {
-      if (!modal || !modalImage || !modalCaption) return;
-      lastFocus = document.activeElement;
-      modalImage.src = card.dataset.portfolioImage;
-      modalImage.alt = card.querySelector("img") ? card.querySelector("img").alt : "";
-      modalCaption.textContent = card.dataset.portfolioCaption || "";
-      modal.hidden = false;
-      document.body.classList.add("portfolio-modal-open");
-      if (closeButton) closeButton.focus();
-      if (typeof trackLandingEvent === "function") trackLandingEvent("landing_portfolio_aberto");
-    });
+  if (gallery) gallery.addEventListener("click", function (event) {
+    const card = event.target.closest(".portfolio-item");
+    if (!card || !gallery.contains(card) || !modal || !modalImage || !modalCaption) return;
+    lastFocus = document.activeElement;
+    modalImage.src = card.dataset.portfolioImage;
+    modalImage.alt = card.querySelector("img") ? card.querySelector("img").alt : "";
+    modalCaption.textContent = card.dataset.portfolioCaption || "";
+    modal.hidden = false;
+    document.body.classList.add("portfolio-modal-open");
+    if (closeButton) closeButton.focus();
+    if (typeof trackLandingEvent === "function") trackLandingEvent("landing_portfolio_aberto");
   });
   if (closeButton) closeButton.addEventListener("click", closeModal);
   if (modal) {
@@ -80,6 +79,72 @@
   document.addEventListener("keydown", function (event) {
     if (event.key === "Escape") closeModal();
   });
+
+  /* Fonte primária: GitHub público. Fallbacks: manifesto JSON e cartões HTML. */
+  function validPortfolioName(name) {
+    return typeof name === "string" && !/[\/\\]/.test(name) && /\.(?:webp|jpe?g|png)$/i.test(name);
+  }
+  function cleanPhotoName(name) {
+    const base = name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ").trim();
+    return base ? base.charAt(0).toLocaleUpperCase("pt-BR") + base.slice(1) : "Trabalho de unhas";
+  }
+  function renderPortfolioFiles(files) {
+    if (!gallery || !Array.isArray(files)) return;
+    const photos = files.filter(function (file) { return file && validPortfolioName(file.name); })
+      .sort(function (a, b) { return a.name.localeCompare(b.name, "pt-BR", { sensitivity: "base" }); });
+    if (!photos.length) return;
+    const fragment = document.createDocumentFragment();
+    photos.forEach(function (file, index) {
+      const description = cleanPhotoName(file.name);
+      const version = /^[0-9a-f]{7,64}$/i.test(file.version || "") ? "?v=" + file.version.slice(0, 12) : "";
+      const src = "/assets/portfolio/" + encodeURIComponent(file.name) + version;
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = "portfolio-item" + (index === 0 ? " portfolio-item--featured" : "");
+      card.dataset.portfolioImage = src;
+      card.dataset.portfolioCaption = description;
+      const picture = document.createElement("img");
+      picture.src = src;
+      picture.alt = description + " — foto do portfólio de unhas Isabele Mariana Nails em Guarulhos";
+      picture.loading = "lazy";
+      picture.decoding = "async";
+      card.appendChild(picture);
+      fragment.appendChild(card);
+    });
+    gallery.replaceChildren(fragment);
+    cards = Array.from(gallery.querySelectorAll(".portfolio-item"));
+    gallery.scrollLeft = 0;
+    if (total) total.textContent = String(cards.length).padStart(2, "0");
+    updateCounter();
+  }
+  async function discoverPortfolioFiles() {
+    const response = await fetch(
+      "https://api.github.com/repos/poetajoad-alt/landing-page-Isabele-Nails/contents/assets/portfolio?ref=main",
+      { headers: { Accept: "application/vnd.github+json" }, cache: "no-store" }
+    );
+    if (!response.ok) throw new Error("GitHub API " + response.status);
+    const result = await response.json();
+    if (!Array.isArray(result)) throw new Error("Resposta inesperada do GitHub");
+    return result.filter(function (file) { return file.type === "file" && validPortfolioName(file.name); })
+      .map(function (file) { return { name: file.name, version: file.sha }; });
+  }
+  async function readPortfolioManifest() {
+    const response = await fetch("/assets/portfolio/manifest.json", { cache: "no-store" });
+    if (!response.ok) throw new Error("Manifesto indisponível");
+    const data = await response.json();
+    if (!data || !Array.isArray(data.files)) throw new Error("Manifesto inválido");
+    return data.files;
+  }
+  async function initializePortfolio() {
+    if (!gallery) return;
+    try {
+      renderPortfolioFiles(await discoverPortfolioFiles());
+    } catch (_) {
+      try { renderPortfolioFiles(await readPortfolioManifest()); }
+      catch (_) { /* Mantém os cartões HTML se ambas as fontes falharem. */ }
+    }
+  }
+  initializePortfolio();
 
   function safeHttps(url) {
     try {
