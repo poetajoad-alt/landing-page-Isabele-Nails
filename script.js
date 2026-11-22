@@ -76,6 +76,19 @@ if (bookingLink) {
   });
 }
 
+/* Agendamento direto pelo botão fixo do cabeçalho mobile. */
+const mobileHeaderBooking = document.getElementById("mobile-header-booking");
+if (mobileHeaderBooking) {
+  mobileHeaderBooking.href = siteConfig.bookingUrl;
+  mobileHeaderBooking.addEventListener("click", () => {
+    trackLandingEvent("landing_agendamento_click", {
+      destino: "aplicativo",
+      posicao: "cabecalho_mobile",
+    });
+    closeMobileMenu();
+  });
+}
+
 /* =========================================================
    INSTAGRAM
    ========================================================= */
