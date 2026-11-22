@@ -38,17 +38,7 @@ const bookingLink = document.getElementById("booking-link");
 
 const contactInstagramLink = document.getElementById("contact-instagram-link");
 
-const instagramSlides = document.querySelectorAll(".instagram-slide");
 
-const instagramPrevButton = document.querySelector(".instagram-carousel-prev");
-
-const instagramNextButton = document.querySelector(".instagram-carousel-next");
-
-const instagramCurrentSlide = document.getElementById(
-  "instagram-current-slide",
-);
-
-const instagramTotalSlides = document.getElementById("instagram-total-slides");
 
 const whatsappLink = document.getElementById("whatsapp-link");
 
@@ -98,54 +88,6 @@ if (contactInstagramLink) {
       posicao: "secao_contato",
     });
   });
-}
-
-/* =========================================================
-   CARROSSEL DO INSTAGRAM
-   ========================================================= */
-
-let instagramCurrentIndex = 0;
-
-function updateInstagramCarousel() {
-  const offset = instagramCurrentIndex * 100;
-
-  instagramSlides.forEach((slide) => {
-    slide.style.transform = `translateX(-${offset}%)`;
-  });
-
-  if (instagramCurrentSlide) {
-    instagramCurrentSlide.textContent = instagramCurrentIndex + 1;
-  }
-
-  if (instagramTotalSlides) {
-    instagramTotalSlides.textContent = instagramSlides.length;
-  }
-}
-
-if (instagramSlides.length > 0) {
-  updateInstagramCarousel();
-
-  if (instagramPrevButton) {
-    instagramPrevButton.addEventListener("click", () => {
-      instagramCurrentIndex =
-        instagramCurrentIndex === 0
-          ? instagramSlides.length - 1
-          : instagramCurrentIndex - 1;
-
-      updateInstagramCarousel();
-    });
-  }
-
-  if (instagramNextButton) {
-    instagramNextButton.addEventListener("click", () => {
-      instagramCurrentIndex =
-        instagramCurrentIndex === instagramSlides.length - 1
-          ? 0
-          : instagramCurrentIndex + 1;
-
-      updateInstagramCarousel();
-    });
-  }
 }
 
 /* =========================================================
@@ -270,7 +212,7 @@ internalLinks.forEach((link) => {
    SEÇÕES VISUALIZADAS — UMA VEZ POR CARREGAMENTO
    ========================================================= */
 
-const secoesMonitoradas = ["sobre", "agendamento", "instagram", "contato"];
+const secoesMonitoradas = ["portfolio", "servicos", "sobre", "avaliacoes", "agendamento", "artigos", "contato"];
 
 const observadorSecoes = new IntersectionObserver(
   (entradas, observador) => {
@@ -326,9 +268,9 @@ updateHeader();
 
 const navigationSectionIds = [
   "inicio",
+  "portfolio",
   "sobre",
   "agendamento",
-  "instagram",
   "contato",
 ];
 
@@ -384,7 +326,11 @@ const animatedElements = document.querySelectorAll(
     ".about-content",
     ".booking-content",
     ".booking-preview",
-    ".instagram-carousel",
+    ".portfolio-gallery",
+    ".service-grid",
+    ".about-editorial-grid",
+    ".trust-grid",
+    ".reviews-intro",
     ".contact-card",
   ].join(", "),
 );
