@@ -10,10 +10,6 @@
 .portfolio-item--featured{grid-row:span 2}
 .portfolio-item img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
 .portfolio-item:hover img{transform:scale(1.045)}
-.portfolio-item::after{content:"";position:absolute;inset:35% 0 0;background:linear-gradient(transparent,rgba(30,15,24,.67));pointer-events:none}
-.portfolio-item-caption{position:absolute;z-index:1;bottom:24px;left:26px;right:15px;display:grid;gap:5px}
-.portfolio-item-caption small{font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:#ffe7ed}
-.portfolio-item-caption strong{font-family:"Playfair Display",serif;font-size:clamp(1.2rem,2vw,1.65rem);font-weight:500;line-height:1.25}
 .portfolio-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:20px}
 .portfolio-swipe-hint{display:none;color:var(--text-soft);font-size:.95rem}
 .portfolio-controls{display:none;align-items:center;gap:14px}
@@ -82,7 +78,6 @@ body.portfolio-modal-open{overflow:hidden}
 .portfolio-gallery::-webkit-scrollbar{display:none}
 .portfolio-item{flex:0 0 82%;aspect-ratio:4/5;scroll-snap-align:start;scroll-snap-stop:always}
 .portfolio-item--featured{grid-row:auto}
-.portfolio-item-caption{bottom:24px;left:20px}
 .portfolio-swipe-hint{display:inline-flex}
 .portfolio-controls{display:flex}
 .service-grid,.trust-grid,.google-reviews-list{grid-template-columns:1fr}
@@ -142,4 +137,42 @@ body.portfolio-modal-open{overflow:hidden}
     aspect-ratio:4 / 5;
     border-radius:24px;
   }
+}
+
+/* Home: portfólio livre de legendas sobrepostas e foto do Sobre logo após o título no celular. */
+/* Grid editorial em telas largas: fotografia à esquerda, apresentação à direita. */
+.about-editorial-grid{
+  grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);
+  grid-template-areas:"photo heading" "photo description";
+  column-gap:clamp(40px,8vw,110px);
+  row-gap:0;
+  align-items:start;
+}
+.about-editorial-heading{grid-area:heading;align-self:end}
+.about-editorial-heading h2{
+  font-family:"Playfair Display",serif;
+  font-size:clamp(2.5rem,5vw,4.2rem);
+  font-weight:600;
+  line-height:1.1;
+  letter-spacing:-.03em;
+  color:var(--text);
+}
+.about-editorial-heading h2 span{color:var(--pink-dark);font-style:italic}
+.about-editorial-card{grid-area:photo;align-self:center;justify-self:stretch}
+.about-editorial-copy{grid-area:description;align-self:start;padding-top:22px}
+@media(max-width:900px){
+  .about-editorial-grid{
+    grid-template-columns:minmax(0,1fr);
+    grid-template-areas:"heading" "photo" "description";
+    row-gap:26px;
+  }
+  .about-editorial-heading{align-self:auto}
+  .about-editorial-card{width:100%;max-width:520px;justify-self:center;order:initial;margin:0}
+  .about-editorial-copy{width:100%;max-width:680px;order:initial;padding-top:0}
+  .about-editorial{padding:66px 0 82px}
+}
+@media(max-width:700px){
+  .about-editorial{padding:58px 0 78px}
+  .about-editorial-heading h2{font-size:clamp(2.5rem,11.5vw,3.7rem)}
+  .about-editorial-grid{row-gap:24px}
 }

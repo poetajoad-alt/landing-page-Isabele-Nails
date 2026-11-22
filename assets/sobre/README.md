@@ -1,11 +1,9 @@
 # Foto da seção Sobre
 
-Coloque aqui uma fotografia **real e autorizada** da Isabele Mariana com o nome exato:
+A foto real da profissional utilizada pelo site está em:
 
-`isabele-mariana.webp`
+`assets/sobre/sobre-isabele-mariana-nails.webp`
 
-Caminho completo no projeto: `assets/sobre/isabele-mariana.webp`
+O campo `data-src` na home aponta para esse arquivo. O enquadramento utiliza proporção vertical 4:5 e bordas arredondadas. No celular, a imagem é exibida logo abaixo do título "Prazer, Isabele Mariana.", antes dos parágrafos. O monograma "IM" continua como fallback caso o arquivo não carregue.
 
-Recomendação: retrato vertical 4:5, por exemplo 1000 × 1250 px, WebP otimizado, preferencialmente com rosto e parte superior do corpo centralizados. O site exibirá a foto automaticamente após o próximo push/deploy. Enquanto o arquivo não existir, o layout continuará com o monograma "IM" e sem imagem quebrada.
-
-Não alterar o caminho no HTML: ele já está preparado. 
+Ao substituir a foto, mantenha o nome e o caminho, para evitar alterações adicionais no HTML.
