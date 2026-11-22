@@ -100,3 +100,19 @@ body.portfolio-modal-open{overflow:hidden}
 @media(prefers-reduced-motion:reduce){.portfolio-item img{transition:none}.portfolio-gallery{scroll-behavior:auto}}
 
 .google-reviews-list[hidden]{display:none!important}
+
+/* Ícones lineares padronizados — SVG local, sem bibliotecas externas. */
+.site-icon{display:block;width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.hero-info-icon .site-icon{width:20px;height:20px}
+.trust-item>.site-feature-icon{display:inline-flex;width:44px;height:44px;align-items:center;justify-content:flex-start;margin:0 0 18px;color:var(--pink-dark);font-size:inherit}
+.site-feature-icon .site-icon{width:32px;height:32px}
+.booking-floating-card>span .site-icon{width:21px;height:21px}
+.bottom-nav-item .site-icon{width:21px;height:21px}
+/* Imagem do Sobre: fallback elegante até a fotografia autorizada ser enviada. */
+.about-editorial-card{position:relative;overflow:hidden}
+.about-editorial-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}
+.about-editorial-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:inherit}
+.about-editorial-photo[hidden]{display:none!important}
+.about-editorial-card.has-photo{padding:0;background:#f0dce3}
+.about-editorial-card.has-photo .about-editorial-placeholder{display:none}
+.about-editorial-copy strong{font-weight:700;color:var(--text)}

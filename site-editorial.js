@@ -149,4 +149,19 @@
       if (typeof trackLandingEvent === "function") trackLandingEvent("landing_servico_blog_click", { destino: link.getAttribute("href") });
     });
   });
+
+  // A foto do Sobre é opcional: só aparece quando o arquivo real for publicado.
+  const aboutPhoto = document.getElementById("about-professional-photo");
+  if (aboutPhoto && aboutPhoto.dataset.src) {
+    const aboutCard = document.getElementById("about-professional-card");
+    aboutPhoto.addEventListener("load", function () {
+      aboutPhoto.hidden = false;
+      if (aboutCard) aboutCard.classList.add("has-photo");
+    });
+    aboutPhoto.addEventListener("error", function () {
+      aboutPhoto.hidden = true;
+      if (aboutCard) aboutCard.classList.remove("has-photo");
+    });
+    aboutPhoto.src = aboutPhoto.dataset.src;
+  }
 })();
