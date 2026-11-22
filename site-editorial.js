@@ -5,6 +5,8 @@
   const gallery = document.getElementById("portfolio-gallery");
   const cards = gallery ? Array.from(gallery.querySelectorAll(".portfolio-item")) : [];
   const current = document.getElementById("portfolio-current");
+  const total = document.getElementById("portfolio-total");
+  if (total) total.textContent = String(cards.length).padStart(2, "0");
   const modal = document.getElementById("portfolio-lightbox");
   const modalImage = document.getElementById("portfolio-lightbox-image");
   const modalCaption = document.getElementById("portfolio-lightbox-caption");

@@ -1,3 +1,5 @@
+---
+---
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -90,7 +92,7 @@
 
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="/blog/landing-articles.css?v=20261121-mobile-showcase">
-  <link rel="stylesheet" href="/site-editorial.css?v=20261122-portfolio-clean-about-order">
+  <link rel="stylesheet" href="/site-editorial.css?v=20261122-auto-portfolio">
 </head>
 
 <body>
@@ -272,22 +274,37 @@
           </div>
           <p>Explore acabamentos, cores e estilos para encontrar a inspiração do seu próximo atendimento de unhas em Guarulhos.</p>
         </div>
+        {% comment %}
+        A página é gerada pelo Jekyll do GitHub Pages a cada push.
+        A lista é construída automaticamente a partir dos arquivos em assets/portfolio.
+        A numeração e a primeira foto em destaque acompanham os arquivos encontrados.
+        {% endcomment %}
+        {% assign portfolio_count = 0 %}
+        {% assign portfolio_files = site.static_files | sort: 'path' %}
         <div class="portfolio-gallery" id="portfolio-gallery" role="region" aria-label="Galeria de unhas; deslize para o lado no celular" tabindex="0">
-          <button type="button" class="portfolio-item portfolio-item--featured" data-portfolio-image="/assets/portfolio/vinho-brilhante.webp" data-portfolio-caption="Unhas amendoadas com esmaltação vinho escuro e alto brilho.">
-            <img src="/assets/portfolio/vinho-brilhante.webp" alt="Unhas amendoadas com esmaltação vinho escuro brilhante em trabalho da Isabele Mariana Nails" width="1200" height="900" loading="lazy" decoding="async">
-          </button>
-          <button type="button" class="portfolio-item" data-portfolio-image="/assets/portfolio/cuidados-unhas.webp" data-portfolio-caption="Inspiração de acabamento para unhas bem cuidadas.">
-            <img src="/assets/portfolio/cuidados-unhas.webp" alt="Fotografia de unhas utilizada no conteúdo de cuidados da Isabele Mariana Nails" width="1200" height="900" loading="lazy" decoding="async">
-          </button>
-          <button type="button" class="portfolio-item" data-portfolio-image="/assets/portfolio/esmaltacao-gel.webp" data-portfolio-caption="Referência de esmaltação em gel e acabamento.">
-            <img src="/assets/portfolio/esmaltacao-gel.webp" alt="Esmaltação em gel com acabamento delicado, imagem do blog Isabele Mariana Nails" width="1200" height="900" loading="lazy" decoding="async">
-          </button>
+          {% for photo in portfolio_files %}
+            {% assign photo_ext = photo.extname | downcase %}
+            {% if photo.path contains '/assets/portfolio/' %}
+              {% if photo_ext == '.webp' or photo_ext == '.jpg' or photo_ext == '.jpeg' or photo_ext == '.png' %}
+                {% assign photo_name = photo.basename | replace: '-', ' ' | replace: '_', ' ' | strip | capitalize %}
+                <button type="button"
+                  class="portfolio-item{% if portfolio_count == 0 %} portfolio-item--featured{% endif %}"
+                  data-portfolio-image="{{ photo.path | escape }}"
+                  data-portfolio-caption="{{ photo_name | escape }}">
+                  <img src="{{ photo.path | escape }}"
+                    alt="{{ photo_name | escape }} — fotografia de unhas no portfólio Isabele Mariana Nails em Guarulhos"
+                    loading="lazy" decoding="async">
+                </button>
+                {% assign portfolio_count = portfolio_count | plus: 1 %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
         </div>
         <div class="portfolio-bottom">
           <span class="portfolio-swipe-hint">Deslize para explorar <span aria-hidden="true">↔</span></span>
           <div class="portfolio-controls" aria-label="Navegação do portfólio">
             <button type="button" class="portfolio-arrow" data-gallery-direction="-1" aria-label="Imagem anterior">←</button>
-            <span class="portfolio-position"><span id="portfolio-current">01</span> / 03</span>
+            <span class="portfolio-position"><span id="portfolio-current">01</span> / <span id="portfolio-total">{{ portfolio_count }}</span></span>
             <button type="button" class="portfolio-arrow" data-gallery-direction="1" aria-label="Próxima imagem">→</button>
           </div>
         </div>
@@ -769,7 +786,7 @@
   </footer>
 
 
-  <script src="/site-editorial.js?v=20261122-icons-about" defer></script>
+  <script src="/site-editorial.js?v=20261122-auto-portfolio" defer></script>
   <script src="script.js"></script>
   <script src="/blog/landing-mobile-carousel.js" defer></script>
   <script src="/blog/landing-blog-analytics.js" defer></script>
