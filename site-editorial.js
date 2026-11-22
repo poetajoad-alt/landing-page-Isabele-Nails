@@ -107,9 +107,15 @@
       if (typeof data.rating !== "number" || !Number.isFinite(data.rating)) return;
       rating.textContent = data.rating.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
       count.textContent = (Number(data.total) || 0).toLocaleString("pt-BR") + " avaliações no Google Maps";
+      const summaryStars = container.querySelector(".google-reviews-stars");
+      if (summaryStars) {
+        const n = Math.max(0, Math.min(5, Math.round(data.rating)));
+        summaryStars.textContent = "★".repeat(n) + "☆".repeat(5 - n);
+      }
       list.replaceChildren();
       (Array.isArray(data.reviews) ? data.reviews : []).slice(0, 3).forEach(function (review) {
-        if (!review.text || !review.author) return;
+        // Cada avaliação precisa apontar para sua origem individual no Google Maps.
+        if (!review.text || !review.author || !safeHttps(review.googleMapsUri)) return;
         const card = document.createElement("article");
         card.className = "google-review-card";
         const stars = document.createElement("div");
@@ -118,7 +124,8 @@
         stars.textContent = "★".repeat(Math.max(0, Math.min(5, Number(review.rating) || 0)));
         const quote = document.createElement("blockquote");
         quote.textContent = review.text;
-        const author = document.createElement("span");
+        const authorProfile = safeHttps(review.authorUri);
+        const author = authorProfile ? makeLink(review.author, authorProfile, "google-review-author") : document.createElement("span");
         author.className = "google-review-author";
         author.textContent = review.author;
         card.append(stars, quote, author);
@@ -127,7 +134,7 @@
         list.append(card);
       });
       container.hidden = false;
-      if (!list.children.length) list.hidden = true;
+      list.hidden = !list.children.length;
     } catch (_) {
       // Sites estáticos ou API ainda não configurada: mantém convite oficial sem inventar avaliações.
     }

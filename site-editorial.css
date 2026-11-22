@@ -98,3 +98,5 @@ body.portfolio-modal-open{overflow:hidden}
 .google-reviews-list{gap:12px}
 }
 @media(prefers-reduced-motion:reduce){.portfolio-item img{transition:none}.portfolio-gallery{scroll-behavior:auto}}
+
+.google-reviews-list[hidden]{display:none!important}
