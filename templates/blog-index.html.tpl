@@ -32,6 +32,7 @@
   <main id="conteudo">
     <section class="blog-hero" aria-labelledby="blog-heading"><div class="wrap blog-hero__inner">
       <div class="blog-hero__text">
+        <a class="blog-back-link" href="/">← Voltar ao site</a>
         <span class="eyebrow">Blog Isabele Mariana Nails · Guarulhos</span>
         <h1 id="blog-heading">Cuidados, beleza e inspiração.</h1>
         <p>Descubra dicas, técnicas e inspirações para cuidar das unhas e escolher seu próximo estilo. Um espaço de beleza e autocuidado da Isabele Mariana Nails, nos Pimentas.</p>

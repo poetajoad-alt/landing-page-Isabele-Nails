@@ -31,7 +31,7 @@
   <main id="conteudo">
     <section class="blog-all__hero" aria-labelledby="all-articles-title">
       <div class="wrap">
-        <a class="blog-all__back" href="/blog/">← Voltar ao blog</a>
+        <a class="blog-all__back blog-back-link" href="/blog/">← Voltar ao blog</a>
         <span class="eyebrow">Blog Isabele Mariana Nails · Guarulhos</span>
         <h1 id="all-articles-title">Todos os artigos</h1>
         <p>Dicas, inspirações e orientações para cuidar das unhas e escolher seu próximo visual.</p>

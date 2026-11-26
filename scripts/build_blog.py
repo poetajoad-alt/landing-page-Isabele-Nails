@@ -201,7 +201,7 @@ def article_html(post, preview):
     state = " · Conteúdo em revisão" if not post["published"] else ""
     article = (
         '<article class="article-content">\n'
-        '  <a class="kicker" href="/blog/">← Voltar ao blog</a>\n'
+        '  <a class="kicker blog-back-link" href="/blog/">← Voltar ao blog</a>\n'
         '  <span class="eyebrow">' + e(post["category"]) + '</span>\n'
         '  <h1 class="article-title">' + e(post["title"]) + '</h1>\n'
         '  <p class="article-lead">' + e(post["summary"]) + '</p>\n'
